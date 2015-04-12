@@ -2,153 +2,66 @@
 # serverproxy.py
 
 import socket
-import thread
-import threading
-import base64
+import uuid
+
+import requests
+
+from channelproxy import ChannelProxy
 from pubsubclient import PubSubClient
 
 
-class ClientChannel(object):
-	def __init__(self, sock, addr, txchannel, rxchannel):
-		assert isinstance(sock, socket.socket)
-		assert isinstance(addr, (tuple, list))
-		assert len(addr) == 2
-		assert isinstance(txchannel, str)
-		assert isinstance(rxchannel, str)
-
-		super(ClientChannel, self).__init__()
-
-		self.__socket = sock
-		self.__client_address = addr
-		self.__tx_channel = txchannel
-		self.__rx_channel = rxchannel
-		self.__pubsubclient = PubSubClient()
-
-	def start(self):
-		thread.start_new_thread(self.thread_main, tuple())
-
-		while True:
-			data = self.__socket.recv(1024)
-			if len(data):
-				payload = base64.b64encode(data)
-				self.__pubsubclient.publish({
-					'channel': self.__tx_channel,
-					'message': {
-						'command': 'send',
-						'payload': payload
-					}
-				})
-			else:
-				self.__pubsubclient.publish({
-					'channel': self.__tx_channel,
-					'message': {
-						'command': 'close'
-					}
-				})
-				self.__client_socket.close()
-				self.__client_socket = None
-				break
-
-	def thread_main(self):
-		self.__pubsubclient.subscribe({
-			'channel': self.__rx_channel,
-		    'callback': self.channel_message_received
-		})
-
-	def channel_message_received(self, message):
-		event = message['event']
-
-		if event == 'received':
-			payload = message['payload']
-			raw = base64.b64decode(payload)
-			self.__client_socket.sendall(raw)
-
-		elif event == 'closed':
-			self.__client_socket.close()
-
-		return True
-
-
-
-
-
-
 class ServerProxy(object):  # port 를 리슨하며, 수신되는 데이터를 모두 channel 로 redirecting
-	def __init__(self, port, tx_channel, rx_channel):
+	def __init__(self, sensor_name, port):
 		assert isinstance(port, int)
-		assert isinstance(tx_channel, str)
-		assert isinstance(rx_channel, str)
+		assert isinstance(sensor_name, str)
 
 		super(ServerProxy, self).__init__()
 
 		self.__port = port
-		self.__tx_channel = tx_channel
-		self.__rx_channel = rx_channel
+		self.__sensor_name = sensor_name
+		self.__pubsubclient = PubSubClient()
 		self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
 		self.__socket.bind(('', self.__port))
-		self.__pubsubclient = PubSubClient()
-		self.__client_socket = None
-		self.__client_address = None
+		self.__running = False
+		self.__proxies = []
 
 	def start(self):
-		while True:
+		assert not self.__running
+
+		self.__running = True
+
+		while self.__running:
+			print 'listening...'
+
 			self.__socket.listen(1)
 			s, addr = self.__socket.accept()
-			self.__client_socket = s
-			self.__client_address = addr
 
-			thread.start_new_thread(self.thread_main, tuple())
+			# find channel
+			ret = requests.get('http://nini.duckdns.org:8100/api/query/%s/' % self.__sensor_name)
+			ret = ret.json()
+			print ret  # print channel finding result.
 
-			self.__pubsubclient.publish({
-				'channel': self.__tx_channel,
-			    'message': {
-				    'command': 'connect'
-			    }
-			})
+			if ret['code'] == 'ok':
+				rx_channel = 'rx-' + str(uuid.uuid4())
+				tx_channel = 'tx-' + str(uuid.uuid4())
 
-			while True:
-				data = s.recv(1024)
-				if len(data):
-					payload = base64.b64encode(data)
-					self.__pubsubclient.publish({
-						'channel': self.__tx_channel,
-					    'message': {
-						    'command': 'send',
-					        'payload': payload
-					    }
-					})
-				else:
-					self.__pubsubclient.publish({
-						'channel': self.__tx_channel,
-					    'message': {
-						    'command': 'close'
-					    }
-					})
-					self.__client_socket.close()
-					self.__client_socket = None
-					break
+				proxy = ChannelProxy(s, rx_channel, tx_channel)
+				proxy.start()
+				self.__proxies.append(proxy)
 
+				self.__pubsubclient.publish({
+					'channel': ret['result']['channel'],
+					'message': {
+						'command': 'connect',
+						'tx_channel': rx_channel,
+						'rx_channel': tx_channel
+					}
+				})
 
-	def thread_main(self):
-		self.__pubsubclient.subscribe({
-			'channel': self.__rx_channel,
-		    'callback': self.channel_message_received
-		})
+			else:
+				s.close()
 
-	def channel_message_received(self, message):
-		event = message['event']
-
-		if event == 'received':
-			payload = message['payload']
-			raw = base64.b64decode(payload)
-			self.__client_socket.sendall(raw)
-
-		elif event == 'closed':
-			self.__client_socket.close()
-
-		return True
-
-
-if __name__ == '__main__':
-	proxy = ServerProxy(9300, 'tx-raspi', 'rx-raspi')
-	proxy.start()
+	def stop(self):
+		self.__running = False
+		self.__socket.close()
+		self.__socket = None

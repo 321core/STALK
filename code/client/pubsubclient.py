@@ -7,146 +7,138 @@ import urllib2
 import socket
 import traceback
 
-class PubSubClient( object ):
-	def __init__( self, origin = 'pubsub.ninilove.com', logger = None ):
-		super( PubSubClient, self ).__init__()
-		
-		self.origin		   = origin
-		self.limit		   = 1800
-		self.origin = 'http://'	 + self.origin
+import requests
+
+
+class PubSubClient(object):
+	def __init__(self, origin='pubsub.ninilove.com', logger=None):
+		super(PubSubClient, self).__init__()
+
+		self.origin = origin
+		self.limit = 1800
+		self.origin = 'http://' + self.origin
 		self.logger = logger
-		
-	def _encode( self, request ) :
+
+	def _encode(self, request):
 		ret = [
-			"".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
-				hex(ord(ch)).replace( '0x', '%' ).upper() or
-				ch for ch in list(bit)
+			"".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
+			         hex(ord(ch)).replace('0x', '%').upper() or
+			         ch for ch in list(bit)
 			]) for bit in request]
 
-		return "".join( ret )
+		return "".join(ret)
 
-	def _request( self, request, params = None ) :
-		## Build URL
-		url = self.origin + '/' + "/".join( request )
+	def _request(self, request, params=None):
+		# Build URL
+		url = self.origin + '/' + "/".join(request)
 		## Add query params
 		if params is not None and len(params) > 0:
 			url = url + "?"
 			for k in params:
-				v = params[ k ]
+				v = params[k]
 				url += "%s=%s&" % ( k, v )
 
 			url = url[:-1]
-			
-		###print url ####
 
-		## Send Request Expecting JSONP Response
+		# Send Request Expecting JSONP Response
 		try:
-			usock = urllib2.urlopen( url, None, 60 ) # 자체 PubSub 을 사용하므로, 믿고 60초로 가자.
+			usock = urllib2.urlopen(url, None, 60)  # 자체 PubSub 을 사용하므로, 믿고 60초로 가자.
 			response = usock.read()
 			usock.close()
-			res = json.loads( response )
+			res = json.loads(response)
 			return res
-		
+
 		except urllib2.URLError, e:
 			if self.logger:
-				self.logger.debug( u"[PubSub] _request 중 URLError가 발생하였습니다. pubsub 이 제대로 돌고 있나요?:%s" % repr( request ) )
-				
+				self.logger.debug(u"[PubSub] _request 중 URLError가 발생하였습니다. pubsub 이 제대로 돌고 있나요?:%s" % repr(request))
+
 			return None
-			
+
 		except socket.timeout, e:
 			if self.logger:
-				self.logger.debug( u"[PubSub] _request 중 타임아웃이 발생하였습니다 리퀘스트:%s" % repr( request ) )
+				self.logger.debug(u"[PubSub] _request 중 타임아웃이 발생하였습니다 리퀘스트:%s" % repr(request))
 
 			return None
-			
-		except Exception, e:
+
+		except:
 			if self.logger:
-				self.logger.error( u"[PubSub] _request 중 에러가 발생하였습니다. 리퀘스트:%s" % repr( request ), exc_info = True )
+				self.logger.error(u"[PubSub] _request 중 에러가 발생하였습니다. 리퀘스트:%s" % repr(request), exc_info=True)
 
-			return None		
+			return None
 
-	def publish( self, args ) :
-		## Fail if bad input.
-		if not (args['channel'] and args['message']) :
-			return [ 0, 'Missing Channel or Message' ]
+	def publish(self, args):
+		# Fail if bad input.
+		if not (args['channel'] and args['message']):
+			return [0, 'Missing Channel or Message']
 
-		## Capture User Input
+		# Capture User Input
 		channel = str(args['channel'])
-		message = json.dumps(args['message'], separators=(',',':'))
+		message = json.dumps(args['message'], separators=(',', ':'))
 
-		## Send Message
-		ret = self._request( [ channel, 'publish' ], { 'message': self._encode( message ) } )
+		# Send Message
+		ret = self._request([channel, 'publish'], {'message': self._encode(message)})
 		if ret:
 			return ret
-		
-		return [ 0, "Not Sent", "0" ]
+
+		return [0, "Not Sent", "0"]
 
 
-	def subscribe( self, args ) :
-		## Fail if missing channel
-		if not 'channel' in args :
+	def subscribe(self, args):
+		# Fail if missing channel
+		if not 'channel' in args:
 			raise Exception('Missing Channel.')
 			return False
 
-		## Fail if missing callback
-		if not 'callback' in args :
+		# Fail if missing callback
+		if not 'callback' in args:
 			raise Exception('Missing Callback.')
 			return False
 
-		## Capture User Input
-		channel	  = str(args['channel'])
-		callback  = args['callback']
+		# Capture User Input
+		channel = str(args['channel'])
+		callback = args['callback']
 
-		## Begin Subscribe
-		self.continueReceive = True	 # modified by CJU, 2013-05-02
-		while self.continueReceive : # modified by CJU, 2013-05-02
+		# Begin Subscribe
+		self.continueReceive = True  # modified by CJU, 2013-05-02
+		while self.continueReceive:  # modified by CJU, 2013-05-02
 			timetoken = 'timetoken' in args and float(args['timetoken']) or 0
-			try :
+			try:
 				## Wait for Message
-				response = self._request( [ channel, 'subscribe' ], { 'timetoken': "%f" % timetoken } )
+				response = self._request([channel, 'subscribe'], {'timetoken': "%f" % timetoken})
 
 				# 응답이 없을 때 None 이 반환된다. Exception 이 발생하지 않도록 피해간다.
 				if response is None:
 					continue
-					
-					
-				print response ##
-					
-				retCode           = response[0]
-				args['timetoken'] = response[1]
-				
-				###print u"타임토큰 업데이트:%f" % float( args[ 'timetoken' ] ) #####
-				
 
-				if len( response ) >= 3:
+				retCode = response[0]
+				args['timetoken'] = response[1]
+
+				if len(response) >= 3:
 					messages = response[2]
 				else:
 					messages = []
 
-				## If it was a timeout
-				if not len(messages) :
+				# If it was a timeout
+				if not len(messages):
 					if self.logger:
-						self.logger.debug( u"[PubSub] subscribe 에 대한 응답으로 len( messages ) == 0 입니다. 다시 request 합니다." )
-				
+						self.logger.debug(u"[PubSub] subscribe 에 대한 응답으로 len( messages ) == 0 입니다. 다시 request 합니다.")
+
 					continue
 
-				## Run user Callback and Reconnect if user permits.
+				# Run user Callback and Reconnect if user permits.
 				if self.logger:
-					self.logger.debug( u"[PubSub] message 가 %d 개 수신되어 콜백을 호출합니다." % len( messages ) )
+					self.logger.debug(u"[PubSub] message 가 %d 개 수신되어 콜백을 호출합니다." % len(messages))
 
-				for ( timeToken, message ) in messages :
-					if not callback( message ) :
+				for ( timeToken, message ) in messages:
+					if not callback(message):
 						return
 
-			except Exception, e:
+			except:
 				if self.logger:
-					self.logger.error( u"[PubSub] subscribe 중 예외가 발생하였습니다. 1.0 초간 딜레이 후 다시 request 합니다.", exc_info=True )
+					self.logger.error(u"[PubSub] subscribe 중 예외가 발생하였습니다. 1.0 초간 딜레이 후 다시 request 합니다.", exc_info=True)
 				else:
 					traceback.print_exc()
-					
+
 				time.sleep(1)
 
 		return True 
-
-
-
