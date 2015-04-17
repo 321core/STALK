@@ -26,6 +26,8 @@ class ChannelProxy(object):
 		self.__socket_receiving_thread = None
 		self.__channel_receiving_thread = None
 		self.__lock = threading.Lock()
+		self.__subscribed = False
+		self.__other_ready = False
 
 	def start(self):
 		assert not self.__running
@@ -44,7 +46,8 @@ class ChannelProxy(object):
 		self.__channel_receiving_thread = None
 
 	def _socket_receiver_thread_main(self, *args):
-		time.sleep(10.0)  ## for debug
+		while not self.__other_ready:
+			time.sleep(0.5)
 
 		while self.__running:
 			try:
@@ -63,7 +66,7 @@ class ChannelProxy(object):
 						}
 					})
 
-					# print 'sending to pubsub:' + payload
+					print 'sending to pubsub:' + payload
 
 				else:
 					self.__pubsubclient.publish({
@@ -72,8 +75,10 @@ class ChannelProxy(object):
 							'command': 'close'
 						}
 					})
-					self.__socket.close()
-					self.__socket = None
+					if self.__socket:
+						self.__socket.close()
+						self.__socket = None
+
 					self.__running = False
 					self.__pubsubclient.publish({
 						'channel': self.__rx_channel,
@@ -85,12 +90,25 @@ class ChannelProxy(object):
 		print 'socket receiver thread exits.'
 
 	def _channel_receiver_thread_main(self, *args):
+		def ttcallback():
+			print 'im subscribed channel.'
+			if not self.__subscribed:
+				self.__subscribed = True
+				self.__pubsubclient.publish({
+					'channel': self.__tx_channel,
+					'message': {
+						'command': 'imready'
+					}
+				})
+
+				print ' and send message.'
+
 		def callback(message):
 			with self.__lock:
 				cmd = message['command']
 				if cmd == 'send':
 					payload = message['payload']
-					# print 'received from channel:"' + payload +'"'  #
+					print 'received from channel:"' + payload +'"'  #
 
 					raw = base64.b64decode(payload)
 					self.__socket.sendall(raw)
@@ -99,19 +117,40 @@ class ChannelProxy(object):
 					return True
 
 				elif cmd == 'close':
-					self.__socket.close()
-					self.__socket = None
+					if self.__socket:
+						self.__socket.close()
+						self.__socket = None
+
 					self.__running = False
 					return False
 
 				elif cmd == 'quit':
 					return False
 
+				elif cmd == 'imready':
+					if not self.__other_ready:
+						print 'other side has subscirbed channel.'
+						self.__other_ready = True
+
+						# send again
+						if self.__subscribed:
+							self.__pubsubclient.publish({
+								'channel': self.__tx_channel,
+								'message': {
+									'command': 'imready'
+								}
+							})
+
+							print ' send imready message again.'
+
+
+
 				return True
 
 		self.__pubsubclient.subscribe({
 			'channel': self.__rx_channel,
-			'callback': callback
+			'callback': callback,
+		    'ttcallback': ttcallback
 		})
 
 		print 'channel receiver thread exits.'

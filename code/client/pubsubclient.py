@@ -70,7 +70,6 @@ class PubSubClient(object):
 
 		return [0, "Not Sent", "0"]
 
-
 	def subscribe(self, args):
 		# Fail if missing channel
 		if not 'channel' in args:
@@ -85,6 +84,10 @@ class PubSubClient(object):
 		# Capture User Input
 		channel = str(args['channel'])
 		callback = args['callback']
+		if 'ttcallback' in args:
+			ttcallback = args['ttcallback']
+		else:
+			ttcallback = None
 
 		# Begin Subscribe
 		self.continueReceive = True  # modified by CJU, 2013-05-02
@@ -100,6 +103,11 @@ class PubSubClient(object):
 
 				retCode = response[0]
 				args['timetoken'] = response[1]
+
+				# 타임토큰을 얻은 최초의 콜백.
+				if ttcallback:
+					ttcallback()
+					ttcallback = None
 
 				if len(response) >= 3:
 					messages = response[2]
