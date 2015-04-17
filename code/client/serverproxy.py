@@ -37,7 +37,7 @@ class ServerProxy(object):  # port 를 리슨하며, 수신되는 데이터를 �
 			s, addr = self.__socket.accept()
 
 			# find channel
-			ret = requests.get('http://nini.duckdns.org:8100/api/query/%s/' % self.__sensor_name)
+			ret = requests.get('http://nini.duckdns.org:8100/api/query/%s/' % self.__sensor_name, timeout=60)
 			ret = ret.json()
 			# print ret  # print channel finding result.
 
