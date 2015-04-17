@@ -31,28 +31,15 @@ class PubSubClient(object):
 	def _request(self, request, params=None):
 		# Build URL
 		url = self.origin + '/' + "/".join(request)
-		## Add query params
-		if params is not None and len(params) > 0:
-			url = url + "?"
-			for k in params:
-				v = params[k]
-				url += "%s=%s&" % ( k, v )
-
-			url = url[:-1]
 
 		# Send Request Expecting JSONP Response
 		try:
-			usock = urllib2.urlopen(url, None, 60)  # 자체 PubSub 을 사용하므로, 믿고 60초로 가자.
-			response = usock.read()
-			usock.close()
-			res = json.loads(response)
-			return res
+			if params:
+				ret = requests.post(url, data=params)
+			else:
+				ret = requests.post(url)
 
-		except urllib2.URLError, e:
-			if self.logger:
-				self.logger.debug(u"[PubSub] _request 중 URLError가 발생하였습니다. pubsub 이 제대로 돌고 있나요?:%s" % repr(request))
-
-			return None
+			return ret.json()
 
 		except socket.timeout, e:
 			if self.logger:
@@ -73,10 +60,11 @@ class PubSubClient(object):
 
 		# Capture User Input
 		channel = str(args['channel'])
-		message = json.dumps(args['message'], separators=(',', ':'))
+		message = json.dumps(args['message'])
+		#message = json.dumps(args['message'], separators=(',', ':'))
 
 		# Send Message
-		ret = self._request([channel, 'publish'], {'message': self._encode(message)})
+		ret = self._request([channel, 'publish'], {'message': '%s' % message})
 		if ret:
 			return ret
 

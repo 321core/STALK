@@ -54,7 +54,7 @@ class ChannelProxy(object):
 
 			with self.__lock:
 				if len(raw):
-					payload = base64.urlsafe_b64encode(raw)
+					payload = base64.b64encode(raw)
 					self.__pubsubclient.publish({
 						'channel': self.__tx_channel,
 						'message': {
@@ -90,10 +90,12 @@ class ChannelProxy(object):
 				cmd = message['command']
 				if cmd == 'send':
 					payload = message['payload']
-					raw = base64.urlsafe_b64decode(payload)
+					print 'received from channel:"' + payload +'"'  #
+
+					raw = base64.b64decode(payload)
 					self.__socket.sendall(raw)
 
-					# print 'sending to socket:' + payload  #
+					print 'sending to socket:' + payload  #
 					return True
 
 				elif cmd == 'close':
