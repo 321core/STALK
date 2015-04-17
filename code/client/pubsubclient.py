@@ -35,9 +35,9 @@ class PubSubClient(object):
 		# Send Request Expecting JSONP Response
 		try:
 			if params:
-				ret = requests.post(url, data=params)
+				ret = requests.post(url, data=params, timeout=60)
 			else:
-				ret = requests.post(url)
+				ret = requests.post(url, timeout=60)
 
 			return ret.json()
 

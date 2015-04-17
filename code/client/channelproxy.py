@@ -90,12 +90,12 @@ class ChannelProxy(object):
 				cmd = message['command']
 				if cmd == 'send':
 					payload = message['payload']
-					print 'received from channel:"' + payload +'"'  #
+					# print 'received from channel:"' + payload +'"'  #
 
 					raw = base64.b64decode(payload)
 					self.__socket.sendall(raw)
 
-					print 'sending to socket:' + payload  #
+					# print 'sending to socket:' + payload  #
 					return True
 
 				elif cmd == 'close':
