@@ -3,7 +3,7 @@
 # app.py
 
 import optparse
-
+import time
 from clientproxy import ClientProxy
 from serverproxy import ServerProxy
 
@@ -51,4 +51,6 @@ def main():
 if __name__ == '__main__':
 	main()
 
-	cmd = raw_input('>')
+	while True:
+		time.sleep(0.1)
+	

@@ -39,7 +39,7 @@ class ServerProxy(object):  # port 를 리슨하며, 수신되는 데이터를 �
 			# find channel
 			ret = requests.get('http://nini.duckdns.org:8100/api/query/%s/' % self.__sensor_name)
 			ret = ret.json()
-			print ret  # print channel finding result.
+			# print ret  # print channel finding result.
 
 			if ret['code'] == 'ok':
 				rx_channel = 'rx-' + str(uuid.uuid4())

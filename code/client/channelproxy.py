@@ -63,7 +63,7 @@ class ChannelProxy(object):
 						}
 					})
 
-					print 'sending to pubsub:' + payload
+					# print 'sending to pubsub:' + payload
 
 				else:
 					self.__pubsubclient.publish({
@@ -93,7 +93,7 @@ class ChannelProxy(object):
 					raw = base64.b64decode(payload)
 					self.__socket.sendall(raw)
 
-					print 'sending to socket:' + payload  #
+					# print 'sending to socket:' + payload  #
 					return True
 
 				elif cmd == 'close':

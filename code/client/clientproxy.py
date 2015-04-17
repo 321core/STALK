@@ -34,7 +34,7 @@ class ClientProxy(object):  # tx_channel 을 subscribe 하며, tx_channel 로 �
 
 		channel = 'c-' + str(uuid.uuid4())
 		ret = requests.get('http://nini.duckdns.org:8100/api/register/%s/?channel=%s' % (self.__sensor_name, channel))
-		print ret.json()  # for debug
+		# print ret.json()  # for debug
 
 		self.__pubsub_client.subscribe({
 			'channel': channel,
