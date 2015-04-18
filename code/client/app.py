@@ -29,20 +29,27 @@ def main():
 	app = Application()
 
 	parse = optparse.OptionParser()
-	parse.add_option('--port', dest='port', type='int')
-	parse.add_option('--server', dest='server')
-
+	parse.add_option('--file', dest='file', type=str)
 	(options, args) = parse.parse_args()
 
 	cmd = args[0]
 
 	if cmd == 'bind':
 		sensor_name = args[1]
-		app.add_server_proxy(sensor_name, options.port)
+		port = int(args[2])
+		app.add_server_proxy(sensor_name, port)
 
-	elif cmd == 'proxy':
+	elif cmd == 'register':
 		sensor_name = args[1]
-		app.add_client_proxy(sensor_name, (options.server, options.port))
+		if hasattr(options, 'file'):
+			server_name, port = open(options.file, 'r').read().split()
+			port = int(port)
+
+		else:
+			server_name = args[2]
+			port = int(args[3])
+
+		app.add_client_proxy(sensor_name, (server_name, port))
 
 	else:
 		print 'unknown command:%s' % cmd
