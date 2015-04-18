@@ -6,6 +6,7 @@ import socket
 import base64
 import threading
 import time
+import traceback
 
 from pubsubclient import PubSubClient
 
@@ -51,8 +52,9 @@ class ChannelProxy(object):
 
 		while self.__running:
 			try:
-				raw = self.__socket.recv(1024 * 100)
+				raw = self.__socket.recv(1024 * 1024) # 1MB
 			except socket.error:
+				traceback.print_exc()
 				raw = ''
 
 			with self.__lock:
@@ -117,8 +119,9 @@ class ChannelProxy(object):
 					return True
 
 				elif cmd == 'close':
+					print 'close socket...'
 					if self.__socket:
-						self.__socket.close()
+						self.__socket.shutdown(socket.SHUT_RDWR)
 						self.__socket = None
 
 					self.__running = False

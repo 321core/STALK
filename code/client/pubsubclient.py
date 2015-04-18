@@ -19,15 +19,6 @@ class PubSubClient(object):
 		self.origin = 'http://' + self.origin
 		self.logger = logger
 
-	def _encode(self, request):
-		ret = [
-			"".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
-			         hex(ord(ch)).replace('0x', '%').upper() or
-			         ch for ch in list(bit)
-			]) for bit in request]
-
-		return "".join(ret)
-
 	def _request(self, request, params=None):
 		# Build URL
 		url = self.origin + '/' + "/".join(request)
