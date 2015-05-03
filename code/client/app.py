@@ -41,7 +41,7 @@ def main():
 
 	elif cmd == 'register':
 		sensor_name = args[1]
-		if hasattr(options, 'file'):
+		if options.file:
 			server_name, port = open(options.file, 'r').read().split()
 			port = int(port)
 
