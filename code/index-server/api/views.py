@@ -4,6 +4,7 @@
 import json
 from django.http import HttpResponse
 import models
+import datetime
 
 
 def register(req, sensor_name):
@@ -17,6 +18,7 @@ def register(req, sensor_name):
 
 	entry = models.Entry.objects.get_or_create(pk=sensor_name)[0]
 	entry.channel = channel
+	entry.time = datetime.datetime.now()
 	entry.save()
 
 	res = {

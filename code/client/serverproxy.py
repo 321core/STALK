@@ -21,6 +21,7 @@ class ServerProxy(object):  # port 를 리슨하며, 수신되는 데이터를 �
 		self.__sensor_name = sensor_name
 		self.__pubsubclient = PubSubClient()
 		self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+		self.__socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		self.__socket.bind(('', self.__port))
 		self.__running = False
 		self.__proxies = []

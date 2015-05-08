@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/client.iml" filepath="$PROJECT_DIR$/.idea/client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../index-server/.idea/stalk-index-server.iml" filepath="$PROJECT_DIR$/../index-server/.idea/stalk-index-server.iml" />
     </modules>
   </component>
 </project>

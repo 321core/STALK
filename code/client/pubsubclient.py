@@ -42,7 +42,7 @@ class PubSubClient(object):
             if self.logger:
                 self.logger.error(u"[PubSub] _request 중 에러가 발생하였습니다. 리퀘스트:%s" % repr(request), exc_info=True)
 
-            traceback.print_exc()
+            # traceback.print_exc()
             return None
 
 
@@ -127,7 +127,8 @@ class PubSubClient(object):
                 if self.logger:
                     self.logger.error(u"[PubSub] subscribe 중 예외가 발생하였습니다. 1.0 초간 딜레이 후 다시 request 합니다.", exc_info=True)
                 else:
-                    traceback.print_exc()
+                    #traceback.print_exc()
+                    pass
 
                 time.sleep(1)
 
