@@ -9,3 +9,5 @@ class Entry(models.Model):
 	channel = models.CharField(db_index=True, max_length=256)
 	time = models.DateTimeField(auto_now=True)
 
+	def __unicode__(self):
+		return u'%s@%s' % (self.sensor_name, self.time)

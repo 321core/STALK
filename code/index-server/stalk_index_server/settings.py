@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'stalk_index_server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'nini.duckdns.org',
+        'HOST': '127.0.0.1',
         'NAME': 'STALK',
         'USER': 'stalk',
         'PASSWORD': 'stalk'
