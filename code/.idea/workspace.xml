@@ -22,20 +22,7 @@
     <favorites_list name="code" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="serverproxy.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/serverproxy.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.19203414" vertical-offset="150" max-vertical-offset="1065">
-              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-              <folding>
-                <element signature="e#42#55#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -51,7 +38,6 @@
         <option value="$PROJECT_DIR$/client/pubsubsocket.py" />
         <option value="$PROJECT_DIR$/client/channelproxy.py" />
         <option value="$PROJECT_DIR$/client/talk.py" />
-        <option value="$PROJECT_DIR$/client/clientproxy.py" />
         <option value="$PROJECT_DIR$/client/query.py" />
         <option value="$PROJECT_DIR$/client/indexserverquery.py" />
         <option value="$PROJECT_DIR$/index-server/stalk_index_server/settings.py" />
@@ -66,9 +52,10 @@
         <option value="$PROJECT_DIR$/channel-server/channelserver.py" />
         <option value="$PROJECT_DIR$/client/error.py" />
         <option value="$PROJECT_DIR$/client/conf.py" />
-        <option value="$PROJECT_DIR$/client/conf/setting.conf" />
         <option value="$PROJECT_DIR$/client/apiclient.py" />
+        <option value="$PROJECT_DIR$/client/conf/setting.conf" />
         <option value="$PROJECT_DIR$/client/serverproxy.py" />
+        <option value="$PROJECT_DIR$/client/clientproxy.py" />
       </list>
     </option>
   </component>
@@ -489,26 +476,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/talk.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="195" max-vertical-offset="1035">
-          <caret line="43" column="24" selection-start-line="43" selection-start-column="24" selection-end-line="43" selection-end-column="24" />
-          <folding>
-            <element signature="e#53#68#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/clientproxy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="257" max-vertical-offset="960">
-          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-          <folding>
-            <element signature="e#42#55#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/pubsubsocket.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1058" max-vertical-offset="2100">
@@ -647,16 +614,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/channelproxy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6187767" vertical-offset="0" max-vertical-offset="1905">
-          <caret line="29" column="33" selection-start-line="29" selection-start-column="33" selection-end-line="29" selection-end-column="33" />
-          <folding>
-            <element signature="e#43#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/error.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.29871976" vertical-offset="0" max-vertical-offset="703">
@@ -689,28 +646,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/conf/setting.conf">
+    <entry file="file://$PROJECT_DIR$/client/talk.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.021337127" vertical-offset="0" max-vertical-offset="703">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.40256044" vertical-offset="272" max-vertical-offset="975">
+          <caret line="41" column="0" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/channelproxy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.38406828" vertical-offset="0" max-vertical-offset="1905">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding>
+            <element signature="e#43#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/clientproxy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44807965" vertical-offset="15" max-vertical-offset="900">
+          <caret line="22" column="53" selection-start-line="22" selection-start-column="53" selection-end-line="22" selection-end-column="53" />
+          <folding>
+            <element signature="e#42#55#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/apiclient.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5547653" vertical-offset="165" max-vertical-offset="885">
-          <caret line="37" column="35" selection-start-line="37" selection-start-column="35" selection-end-line="37" selection-end-column="35" />
+        <state vertical-scroll-proportion="0.061166428" vertical-offset="167" max-vertical-offset="885">
+          <caret line="14" column="4" selection-start-line="14" selection-start-column="4" selection-end-line="14" selection-end-column="4" />
           <folding>
             <element signature="e#40#51#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/client/conf/setting.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.06401138" vertical-offset="0" max-vertical-offset="703">
+          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/client/serverproxy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.19203414" vertical-offset="150" max-vertical-offset="1065">
-          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.658606" vertical-offset="272" max-vertical-offset="1020">
+          <caret line="49" column="56" selection-start-line="49" selection-start-column="56" selection-end-line="49" selection-end-column="56" />
           <folding>
             <element signature="e#42#55#0" expanded="true" />
           </folding>

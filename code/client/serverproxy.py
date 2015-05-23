@@ -5,25 +5,21 @@ import socket
 import uuid
 import json
 
-import requests
-
 import conf
 from channelproxy import ChannelProxy
 from pubsubsocket import PubSubSocket
+import apiclient
 
 
-class ServerProxy(object):  # port 를 리슨하며, 수신되는 데이터를 모두 channel 로 redirecting
-	def __init__(self, sensor_name, port, channel_server_address):
+class ServerProxy(object):
+	def __init__(self, sensor_name, port):
 		assert isinstance(port, int)
 		assert isinstance(sensor_name, str)
-		assert isinstance(channel_server_address, (str, unicode))
 
 		super(ServerProxy, self).__init__()
 
 		self.__port = port
 		self.__sensor_name = sensor_name
-		self.__pubsubsocket = PubSubSocket(channel_server_address)
-		self.__channel_server_address = channel_server_address
 		self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
 		self.__socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 		self.__socket.bind(('', self.__port))
@@ -41,20 +37,21 @@ class ServerProxy(object):  # port 를 리슨하며, 수신되는 데이터를 �
 			self.__socket.listen(1)
 			s, addr = self.__socket.accept()
 
-			# find channel
-			ret = requests.get('http://nini.duckdns.org:8100/api/query/%s/' % self.__sensor_name, timeout=60)
-			ret = ret.json()
-
-			if ret['code'] == 'ok':
+			ret = apiclient.connect(conf.USER_NAME, conf.PASSWORD, self.__sensor_name)
+			if ret:
+				channel_server_address, channel = ret
 				rx_channel = 'rx-' + str(uuid.uuid4())
 				tx_channel = 'tx-' + str(uuid.uuid4())
 
-				#TODO: channel server 를 index server 에서 가져오는 것으로.
-
-				proxy = ChannelProxy(s, rx_channel, tx_channel, self.__channel_server_address)
+				proxy = ChannelProxy(s, rx_channel, tx_channel, channel_server_address)
 				proxy.start()
 				self.__proxies.append(proxy)
-				self.__pubsubsocket.send(ret['result']['channel'], 'connect', json.dumps({'tx_channel': rx_channel, 'rx_channel': tx_channel}))
+
+				s = PubSubSocket(channel_server_address)
+				s.send(ret['result']['channel'], 'connect',
+				       json.dumps({'tx_channel': rx_channel,
+				                   'rx_channel': tx_channel,
+				                   'channel_server_address': channel_server_address}))
 
 			else:
 				s.close()
