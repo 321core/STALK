@@ -1,9 +1,10 @@
 # /usr/bin/python
 # -*- coding: utf-8 -*-
-# app.py
+# talk.py
 
 import optparse
 import time
+
 from clientproxy import ClientProxy
 from serverproxy import ServerProxy
 
@@ -60,4 +61,3 @@ if __name__ == '__main__':
 
 	while True:
 		time.sleep(0.1)
-	
