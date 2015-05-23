@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'stalk_index_server.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
+        'HOST': '',
         'NAME': 'STALK',
         'USER': 'stalk',
         'PASSWORD': 'stalk'
@@ -104,5 +104,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
-
-AUTH_USER_MODEL = 'api.UserProfile'

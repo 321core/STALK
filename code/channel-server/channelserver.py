@@ -16,6 +16,7 @@ from twisted.application import internet, service
 from twisted.python import log
 import psutil
 
+import conf
 import apiclient
 
 
@@ -307,62 +308,20 @@ class Channel(Resource):
 		return message
 
 
-class GetInfo(Resource):
-	isLeaf = True
-
-	def __init__(self, server_):
-		Resource.__init__(self)
-		self.__server = server_
-
-	def render(self, request):
-		try:
-			action = request.postpath[0]
-		except IndexError:
-			action = None
-
-		if action == 'channelList':
-			return self._channel_list(request)
-
-		else:
-			res = NoResource(message="invalid command to server.")
-			return res.render(request)
-
-	def _channel_list(self, request):
-		request.responseHeaders.addRawHeader("Content-Type", "application/json")
-
-		try:
-			prefix = request.args['prefix'][0]
-		except KeyError:
-			prefix = None
-
-		res = []
-		for channel in self.__server.get_channels():
-			if prefix is None or channel.name.startswith(prefix):
-				res.append([channel.name, channel.last_access_time])
-
-		return json.dumps([True, res])
-
-
 class Server(Resource):
 	isLeaf = False
 
 	def __init__(self):
 		Resource.__init__(self)
 
-		self.__getInfo = GetInfo(self)
 		self.__channels = {}
 		self.__apiclient = apiclient.APIClient()
 
 		task.LoopingCall(self.collect_garbages).start(60.0, False)
-		task.LoopingCall(self.report_to_index_server).start(3.0, True)
-		self.__apiclient.start()
+		task.LoopingCall(self.report_to_index_server).start(3.0, False)
 
 	def getChild(self, name, request):
-		# 서버 자체에 대한 API 라면
-		if name == '__getInfo':
-			return self.__getInfo
-
-		elif name:  # 채널에 대한 요청이라면
+		if name:  # 채널에 대한 요청이라면
 			try:
 				return self.__channels[name]
 
@@ -377,7 +336,7 @@ class Server(Resource):
 		tmp = []
 		for channel in self.__channels.values():
 			channel.remove_old_messages()
-			if channel.last_access_time + 60 * 5 < cur_time:  # 5 분 동안 억세스가 없었던 채널을 삭제한다.
+			if channel.last_access_time + 60 * 5 < cur_time:
 				tmp.append(channel.name)
 
 		for channelName in tmp:
@@ -390,12 +349,15 @@ class Server(Resource):
 		return self.__channels.keys()
 
 	def report_to_index_server(self):
-		cpu_rate = psutil.cpu_percent()
-		memory_rate = psutil.phymem_usage().percent
+		if not self.__apiclient.is_running:  # i don't know why, but  call 'start' here (not __init__)
+			self.__apiclient.start()
+
+		cpu_rate = psutil.cpu_percent() / 100.0
+		memory_rate = psutil.phymem_usage().percent / 100.0
 		self.__apiclient.report_status(True, len(self.__channels), cpu_rate, memory_rate)
 
 
-# 실행 시, sudo twistd -y ./channelserver.py 로 실행할 것.
+# twistd -y ./channelserver.py
 application = service.Application('web')
-internet.TCPServer(80, Site(Server())).setServiceParent(service.IServiceCollection(application))
+internet.TCPServer(conf.PORT, Site(Server())).setServiceParent(service.IServiceCollection(application))
 

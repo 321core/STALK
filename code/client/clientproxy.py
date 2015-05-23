@@ -3,6 +3,7 @@
 
 import socket
 import json
+import threading
 
 import conf
 from pubsubsocket import PubSubSocket
@@ -34,21 +35,29 @@ class ClientProxy(object):
 		ret = apiclient.listen(conf.USER_NAME, conf.PASSWORD, self.__sensor_name)
 		if ret:
 			channel_server_address, channel = ret
-			s = PubSubSocket(channel_server_address)
-			s.recv(channel, self.channel_message_received)
+			th = threading.Thread(target=self.recv_thread, args=(channel_server_address, channel))
+			th.setDaemon(True)
+			th.start()
+			return True
 
-	def channel_message_received(self, command, payload):
-		if command == 'connect':
-			message = json.loads(payload)
-			tx_channel = message['tx_channel']
-			rx_channel = message['rx_channel']
-			channel_server_address = message['channel_server_address']
+		return False
 
-			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
-			s.connect(self.__server_address)
+	def recv_thread(self, channel_server_address, channel):
+		def channel_message_received(command, payload):
+			if command == 'connect':
+				message = json.loads(payload)
+				tx_channel = message['tx_channel']
+				rx_channel = message['rx_channel']
+				new_channel_server_address = message['channel_server_address']
 
-			proxy = ChannelProxy(s, rx_channel, tx_channel, channel_server_address)
-			proxy.start()
-			self.__channel_proxies.append(proxy)
+				s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+				s.connect(self.__server_address)
 
-		return True
+				proxy = ChannelProxy(s, rx_channel, tx_channel, new_channel_server_address)
+				proxy.start()
+				self.__channel_proxies.append(proxy)
+
+			return True
+
+		s = PubSubSocket(channel_server_address)
+		s.recv(channel, channel_message_received)

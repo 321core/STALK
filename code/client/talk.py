@@ -35,12 +35,12 @@ def main():
 
 	cmd = args[0]
 
-	if cmd == 'bind':
+	if cmd == 'client':
 		sensor_name = args[1]
 		port = int(args[2])
 		app.add_server_proxy(sensor_name, port)
 
-	elif cmd == 'register':
+	elif cmd == 'server':
 		sensor_name = args[1]
 		if options.file:
 			server_name, port = open(options.file, 'r').read().split()

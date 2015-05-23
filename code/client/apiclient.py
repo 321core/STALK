@@ -23,7 +23,7 @@ def listen(username, password, sensor_name):  #FIXME: requests 모듈로부터�
 
 	if ret.ok:
 		ret = ret.json()
-		if ret['code'] == 'ok':
+		if ret['code'] == 'CODE_OK':
 			return ret['result']['channel-server-address'], ret['result']['channel']
 
 		else:
@@ -43,7 +43,7 @@ def connect(username, password, sensor_name):  #FIXME: requests 모듈로부터�
 
 	if ret.ok:
 		ret = ret.json()
-		if ret['code'] == 'ok':
+		if ret['code'] == 'CODE_OK':
 			return ret['result']['channel-server-address'], ret['result']['channel']
 
 		else:
