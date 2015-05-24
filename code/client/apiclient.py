@@ -2,8 +2,9 @@
 # apiclient.py
 
 import json
-
-import requests
+import urllib
+import urllib2
+import traceback
 
 from error import *
 import conf
@@ -12,42 +13,60 @@ import conf
 TIMEOUT = 10
 
 
-def listen(username, password, sensor_name):  #FIXME: requests 모듈로부터의 오류를 잡아주어야 한다.
+def request_get(url, params=None, headers=None):
+	if params:
+		url += '?' + urllib.urlencode(params)
+
+	req = urllib2.Request(url, headers=headers)
+	try:
+		res = urllib2.urlopen(req, timeout=TIMEOUT)
+		if res.code == 200:
+			return res.read()
+
+	except Exception:
+		traceback.print_exc()
+
+	return None
+
+
+def listen(username, password, sensor_name):
 	assert isinstance(username, str)
 	assert isinstance(password, str)
 	assert isinstance(sensor_name, str)
-	data = json.dumps({'password': password})
+	# data = json.dumps({'password': password})  # NOTE: currently, not used
 
-	ret = requests.post('http://%s/listen/%s/%s/' % (conf.INDEX_SERVER_BASE_URL, username, sensor_name), data=data,
-	                    headers={'Content-Type': 'application/json'}, timeout=TIMEOUT)
+	ret = request_get('http://%s/listen/%s/%s/' % (conf.INDEX_SERVER_BASE_URL, username, sensor_name),
+	                  headers={'Content-Type': 'application/json'})
 
-	if ret.ok:
-		ret = ret.json()
+	if ret is not None:
+		ret = json.loads(ret)
 		if ret['code'] == 'CODE_OK':
 			return ret['result']['channel-server-address'], ret['result']['channel']
 
 		else:
-			raise APIError(message=ret['message'])
+			raise APIError(ret['message'])
 
 	else:
-		raise NetworkError(message='connection failed.')
+		raise NetworkError('connection failed.')
 
 
-def connect(username, password, sensor_name):  #FIXME: requests 모듈로부터의 오류를 잡아주어야 한다.
+def connect(username, password, sensor_name):
 	assert isinstance(username, str)
 	assert isinstance(password, str)
 	assert isinstance(sensor_name, str)
-	data = json.dumps({'password': password})
-	ret = requests.post('http://%s/connect/%s/%s/' % (conf.INDEX_SERVER_BASE_URL, username, sensor_name), data=data,
-	                    headers={'Content-Type': 'application/json'}, timeout=TIMEOUT)
+	# data = json.dumps({'password': password})  # NOTE: currently, not used.
 
-	if ret.ok:
-		ret = ret.json()
+	ret = request_get('http://%s/connect/%s/%s/' % (conf.INDEX_SERVER_BASE_URL, username, sensor_name),
+	                  headers={'Content-Type': 'application/json'})
+
+	if ret is not None:
+		ret = json.loads(ret)
 		if ret['code'] == 'CODE_OK':
-			return ret['result']['channel-server-address'], ret['result']['channel']
+			return ret['result']['channel-server-address'], ret['result']['channel'], \
+			       ret['result']['transfer-channel-server-address']
 
 		else:
-			raise APIError(message=ret['message'])
+			raise APIError(ret['message'])
 
 	else:
-		raise NetworkError(message='connection failed.')
+		raise NetworkError('connection failed.')

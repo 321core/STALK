@@ -5,6 +5,7 @@ import json
 import time
 import datetime
 import uuid
+import random
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -19,10 +20,10 @@ def get_available_channel_server():
 
 	threshold = timezone.now() - datetime.timedelta(seconds=60)
 
-	print threshold
+	servers = list(models.ChannelServer.objects.all())
+	random.shuffle(servers)
 
-	for server in models.ChannelServer.objects.all():
-		print server.last_reporting_time
+	for server in servers:
 		if server.is_visible and server.is_running and server.last_reporting_time > threshold:
 			if min_server is None or server.memory_rate < min_memusage:
 				min_server = server
@@ -86,13 +87,23 @@ def connect(req, user_name, sensor_name):
 		}
 		return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")
 
-	res = {
-		'code': error.CODE_OK,
-		'result': {
-			'channel': entry.channel,
-		    'channel-server-address': entry.channel_server.base_url
+	channelserver = get_available_channel_server()
+
+	if channelserver:
+		res = {
+			'code': error.CODE_OK,
+			'result': {
+				'channel': entry.channel,
+			    'channel-server-address': entry.channel_server.base_url,
+			    'transfer-channel-server-address': channelserver.base_url
+			}
 		}
-	}
+
+	else:
+		res = {
+			'code': error.CODE_NO_SERVER,
+		    'message': 'there are no available channel server.'
+		}
 
 	return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")
 

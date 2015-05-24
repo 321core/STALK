@@ -76,11 +76,11 @@ class Channel(Resource):
 		if success:
 			assert time_token is not None
 
-			if messages is None:
-				res = struct.pack('>Bf', 1, time_token)
+			if messages is None or len(messages) == 0:
+				res = struct.pack('>Bd', 1, time_token)
 
 			else:
-				res = struct.pack('>BfI', 1, time_token, len(messages))
+				res = struct.pack('>BdI', 1, time_token, len(messages))
 				for tt, data in messages:
 					assert isinstance(data, str)
 					res += struct.pack('>I', len(data)) + data

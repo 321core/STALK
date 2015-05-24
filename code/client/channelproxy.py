@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # channelproxy.py
 
-import thread
 import socket
 import threading
 import time
@@ -34,21 +33,34 @@ class ChannelProxy(object):
 		assert not self.__running
 
 		self.__running = True
-		self.__socket_receiving_thread = thread.start_new_thread(self._socket_receiver_thread_main, tuple())
-		self.__channel_receiving_thread = thread.start_new_thread(self._channel_receiver_thread_main, tuple())
+		self.__socket_receiving_thread = threading.Thread(target=self._socket_receiver_thread_main)
+		self.__socket_receiving_thread.setDaemon(True)
+		self.__socket_receiving_thread.start()
+
+		self.__channel_receiving_thread = threading.Thread(target=self._channel_receiver_thread_main)
+		self.__channel_receiving_thread.setDaemon(True)
+		self.__channel_receiving_thread.start()
 
 	def stop(self):
-		self.__running = False
+		if self.__running:
+			self.__running = False
 
-		self.__socket_receiving_thread.join()
-		self.__socket_receiving_thread = None
+			with self.__lock:
+				if self.__socket:
+					self.__socket.shutdown(socket.SHUT_RDWR)
+					self.__socket = None
 
-		self.__channel_receiving_thread.join()
-		self.__channel_receiving_thread = None
+				self.__pubsubsocket.send(self.__rx_channel, 'quit')
 
-	def _socket_receiver_thread_main(self, *args):
+			self.__socket_receiving_thread.join()
+			self.__socket_receiving_thread = None
+
+			self.__channel_receiving_thread.join()
+			self.__channel_receiving_thread = None
+
+	def _socket_receiver_thread_main(self):
 		while not self.__other_ready:
-			time.sleep(0.5)
+			time.sleep(0.01)
 
 		while self.__running:
 			try:
@@ -69,10 +81,11 @@ class ChannelProxy(object):
 
 					self.__running = False
 					self.__pubsubsocket.send(self.__rx_channel, 'quit')
+					break
 
 		print 'socket receiver thread exits.'
 
-	def _channel_receiver_thread_main(self, *args):
+	def _channel_receiver_thread_main(self):
 		def callback(command, payload):
 			if command is None and payload is None:
 				print 'im subscribed channel.'
@@ -86,7 +99,9 @@ class ChannelProxy(object):
 			else:
 				with self.__lock:
 					if command == 'send':
-						self.__socket.sendall(payload)
+						if self.__socket:
+							self.__socket.sendall(payload)
+
 						return True
 
 					elif command == 'close':

@@ -5,13 +5,51 @@ import time
 import socket
 import struct
 import traceback
+import urllib
+import urllib2
 
-import requests
+
+def request_get(url, params=None, headers={}, timeout=10):
+	if params:
+		url += '?' + urllib.urlencode(params)
+
+	url = str(url)
+	req = urllib2.Request(url, headers=headers)
+
+	try:
+		res = urllib2.urlopen(req, timeout=timeout)
+		if res.code == 200:
+			res = res.read()
+			return res
+
+	except Exception:
+		traceback.print_exc()
+
+	return None
+
+
+def request_post(url, params=None, data=None, headers={}, timeout=10):
+	if params:
+		url += '?' + urllib.urlencode(params)
+
+	url = str(url)  # NOTE: it is needed casting to type 'str' for preventing urlopen throw Unicode encoding exception.
+	req = urllib2.Request(url, data=data, headers=headers)
+	try:
+		res = urllib2.urlopen(req, timeout=timeout)
+
+		if res.code == 200:
+			res = res.read()
+			return res
+
+	except Exception:
+		traceback.print_exc()
+
+	return None
 
 
 class PubSubSocket(object):
 	def __init__(self, channel_server_address):
-		assert isinstance(channel_server_address)
+		assert isinstance(channel_server_address, (str, unicode))
 		super(PubSubSocket, self).__init__()
 		self.__channel_server_address = channel_server_address
 		self.__request_stop_receiving = False
@@ -22,19 +60,20 @@ class PubSubSocket(object):
 	@staticmethod
 	def parse_binary_response(data):
 		assert isinstance(data, str)
+
 		if len(data) == 0:
 			return struct.unpack('>B', data)
 
-		elif len(data) == 5:
-			success, time_token = struct.unpack('>Bf', data)
+		elif len(data) == 9:
+			success, time_token = struct.unpack('>Bd', data)
 			return success, time_token
 
-		elif len(data) >= 9:
-			success, time_token, num = struct.unpack('>BfI', data[:9])
-			offset = 9
+		elif len(data) >= 13:
+			success, time_token, num = struct.unpack('>BdI', data[:13])
+			offset = 13
 			messages = []
 			for idx in range(num):
-				sz = struct.unpack('>I', data[offset:offset + 4])
+				sz, = struct.unpack('>I', data[offset:offset + 4])
 				assert sz > 0
 				offset += 4
 
@@ -48,8 +87,8 @@ class PubSubSocket(object):
 			assert False
 
 	def send(self, channel, command, payload=None):
-		assert isinstance(channel, str)
-		assert isinstance(command, str)
+		assert isinstance(channel, (str, unicode))
+		assert isinstance(command, (str, unicode))
 		assert payload is None or isinstance(payload, str)
 
 		if payload:
@@ -64,7 +103,7 @@ class PubSubSocket(object):
 		return [0, "Not Sent", "0"]
 
 	def recv(self, channel, callback, time_token=0):
-		assert isinstance(channel, str)
+		assert isinstance(channel, (str, unicode))
 		assert isinstance(time_token, (float, int, long))
 
 		not_subscribed = True if time_token == 0 else False
@@ -102,7 +141,7 @@ class PubSubSocket(object):
 						payload = None
 
 					if not callback(command, payload):
-						return
+						return True
 
 			except Exception:
 				traceback.print_exc()
@@ -111,8 +150,8 @@ class PubSubSocket(object):
 		return True
 
 	def do_request(self, channel, action, params=None, data=None):
-		assert isinstance(channel, str)
-		assert isinstance(action, str)
+		assert isinstance(channel, (str, unicode))
+		assert isinstance(action, (str, unicode))
 		assert params is None or isinstance(params, dict)
 		assert data is None or isinstance(data, str)
 
@@ -120,15 +159,17 @@ class PubSubSocket(object):
 
 		try:
 			if data is not None:
-				ret = requests.post(url, params=params, data=data, headers={'Content-Type': 'application/octet-stream'}, timeout=60)
-			else:
-				ret = requests.get(url, params=params, timeout=60)
+				ret = request_post(url, params=params, data=data, headers={'Content-Type': 'application/octet-stream'}, timeout=60)
+				return ret
 
-			return ret.content
+			else:
+				ret = request_get(url, params=params, timeout=60)
+				return ret
 
 		except socket.timeout:
 			return None
 
 		except Exception:
+			traceback.print_exc()
 			return None
 

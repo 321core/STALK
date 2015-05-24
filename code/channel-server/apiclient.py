@@ -3,14 +3,13 @@
 
 import time
 import threading
-import traceback
 import urllib
 import urllib2
-import json
 
-import conf
 from twisted.internet.defer import setDebugging
 from twisted.python import log
+
+import conf
 
 
 setDebugging(True)
@@ -35,7 +34,6 @@ class APIClient(object):
 		th.setDaemon(True)
 		th.start()
 		self.__running = True
-		log.msg('APIClient start.')
 
 	def report_status(self, is_running, num_channels, cpu_rate, memory_rate):
 		assert isinstance(is_running, bool)
@@ -56,25 +54,21 @@ class APIClient(object):
 			self.__queue.append(params)
 
 	def thread_main(self):
-		log.msg('** thread starts.')
-		try:
-			while True:
-				with self.__lock:
-					params = self.__queue
-					self.__queue = []
+		while True:
+			with self.__lock:
+				params = self.__queue
+				self.__queue = []
 
-				if params:
-					for param in params:
-						url = 'http://%s/report_channel_server_status/%s/' % (conf.INDEX_SERVER_BASE_URL, conf.NAME)
-						url += '?' + urllib.urlencode(param)
-						req = urllib2.Request(url)
-						try:
-							urllib2.urlopen(req, timeout=TIMEOUT)
+			if params:
+				for param in params:
+					url = 'http://%s/report_channel_server_status/%s/' % (conf.INDEX_SERVER_BASE_URL, conf.NAME)
+					url += '?' + urllib.urlencode(param)
+					req = urllib2.Request(url)
+					try:
+						urllib2.urlopen(req, timeout=TIMEOUT)
 
-						except Exception:
-							log.msg(exc=True)
+					except Exception:
+						log.msg(exc=True)
 
-				else:
-					time.sleep(0.1)
-		finally:
-			log.msg('** thread terminates.')
+			else:
+				time.sleep(0.1)
