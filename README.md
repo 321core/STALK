@@ -17,9 +17,9 @@ v0.1 users can check the channel list at
 
 start server on device:
   1) edit conf/settings.conf
-    INDEX_SERVER_BASE_URL = "localhost:8000/api"  # stalk master server
-    USER_NAME = "bobspoon"  # your stalk account
-    PASSWORD = "bobspoon"  # your stalk passcode
+    > INDEX_SERVER_BASE_URL = "localhost:8000/api"  # stalk master server
+    > USER_NAME = "bobspoon"  # your stalk account
+    > PASSWORD = "bobspoon"  # your stalk passcode
 
   2) run stalk as server
     ./talk.py server VOLOSSH localhost 22
