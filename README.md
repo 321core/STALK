@@ -5,7 +5,7 @@ now branch 'v0.1' has been created.
 if you want to install stalk on your iot device, please download from v0.1 branch.
 currently, major upgrade is undergoing on master branch. major features are:
   - load balancing between multiple channel servers
-  - removing base64 conversion, direct transfer octet stream
+  - removing base64 conversion, direct transfer octet stream (**MUCH FASTER!!**)
   - independent channel namespace per user account
   - *remove dependency to 3rd party modules*, ie.'requests'
   - 
