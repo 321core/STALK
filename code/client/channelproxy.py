@@ -28,11 +28,14 @@ class ChannelProxy(object):
 		self.__lock = threading.Lock()
 		self.__subscribed = False
 		self.__other_ready = False
+		self.__start_time = None
 
 	def start(self):
 		assert not self.__running
 
 		self.__running = True
+		self.__start_time = time.time()
+
 		self.__socket_receiving_thread = threading.Thread(target=self._socket_receiver_thread_main)
 		self.__socket_receiving_thread.setDaemon(True)
 		self.__socket_receiving_thread.start()
@@ -134,3 +137,7 @@ class ChannelProxy(object):
 	@property
 	def running(self):
 		return self.__running
+
+	@property
+	def handshaked(self):
+		return self.__subscribed and self.__other_ready

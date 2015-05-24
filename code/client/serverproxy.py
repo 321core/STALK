@@ -28,7 +28,7 @@ class ServerProxy(object):
 		self.__running = False
 		self.__proxies = []
 
-	def run_main_loop(self):
+	def run_main_loop(self):  # TODO: check channel proxies health, if not synchronized too long, should kill it.
 		assert not self.__running
 
 		self.__running = True
@@ -70,7 +70,6 @@ class ServerProxy(object):
 					p.stop()
 
 			self.__proxies = []
-
 
 	def stop(self):
 		self.__running = False
