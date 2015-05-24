@@ -26,5 +26,5 @@ v0.1 users can check the channel list at
   3. access stalked device:
     - ./talk.py client VOLOSSH 2222
 
-and making connection through SSH, if the IoT serving SSH... 
-  4) ssh pi@localhost -p 2222
+  4. making connection through SSH, if the IoT serving SSH... 
+    - ssh pi@localhost -p 2222
