@@ -4,6 +4,8 @@
 import socket
 import json
 import threading
+import time
+import traceback
 
 import conf
 from pubsubsocket import PubSubSocket
@@ -26,21 +28,76 @@ class ClientProxy(object):
 		self.__sensor_name = sensor_name
 		self.__running = False
 		self.__channel_proxies = []
+		self.__lock = threading.Lock()
+		self.__thread = None
+		self.__pubsubsocket = None
 
-	def start(self):
+	def run_main_loop(self):
 		assert not self.__running
 
 		self.__running = True
 
-		ret = apiclient.listen(conf.USER_NAME, conf.PASSWORD, self.__sensor_name)
-		if ret:
-			channel_server_address, channel = ret
-			th = threading.Thread(target=self.recv_thread, args=(channel_server_address, channel))
-			th.setDaemon(True)
-			th.start()
-			return True
+		try:
+			while self.__running:
+				try:
+					ret = apiclient.listen(conf.USER_NAME, conf.PASSWORD, self.__sensor_name)
+				except Exception:
+					traceback.print_exc()
+					time.sleep(3.0)
+					continue
 
-		return False
+				if ret:
+					channel_server_address, channel = ret
+					self.__thread = threading.Thread(target=self.recv_thread, args=(channel_server_address, channel))
+					self.__thread.start()
+
+					# check channel continously
+					while True:
+						try:
+							ret = apiclient.check_listen_channel(conf.USER_NAME, conf.PASSWORD,
+							                                     self.__sensor_name, channel)
+
+						except Exception:
+							traceback.print_exc()
+							continue
+
+						if ret:
+							time.sleep(10.0)
+
+						else:
+							with self.__lock:
+								self.__pubsubsocket.request_stop_receiving()
+								self.__pubsubsocket.send(channel, 'quit')
+								self.__thread.join()
+								self.__pubsubsocket = None
+								self.__thread = None
+
+							break
+
+				else:
+					time.sleep(3.0)
+
+		except Exception:
+			traceback.print_exc()
+
+		finally:
+			with self.__lock:
+				if self.__pubsubsocket and self.__thread:
+					self.__pubsubsocket.request_stop_receiving()
+					self.__pubsubsocket.send(channel, 'quit')
+					self.__thread.join()
+					self.__pubsubsocket = None
+					self.__thread = None
+
+			print 'stopping channel proxies...'
+			with self.__lock:
+				for p in self.__channel_proxies:
+					if p.running:
+						p.stop()
+
+				self.__channel_proxies = []
+
+			print 'run_loop terminates.'
 
 	def recv_thread(self, channel_server_address, channel):
 		def channel_message_received(command, payload):
@@ -55,9 +112,16 @@ class ClientProxy(object):
 
 				proxy = ChannelProxy(s, rx_channel, tx_channel, new_channel_server_address)
 				proxy.start()
-				self.__channel_proxies.append(proxy)
 
-			return True
+				with self.__lock:
+					self.__channel_proxies.append(proxy)
 
-		s = PubSubSocket(channel_server_address)
-		s.recv(channel, channel_message_received)
+			elif command == 'quit':
+				return False
+
+			return self.__running
+
+		self.__pubsubsocket = PubSubSocket(channel_server_address)
+		self.__pubsubsocket.recv(channel, channel_message_received)
+
+		print 'recv_thread terminates.'

@@ -4,6 +4,8 @@
 import socket
 import uuid
 import json
+import traceback
+import time
 
 import conf
 from channelproxy import ChannelProxy
@@ -26,19 +28,23 @@ class ServerProxy(object):
 		self.__running = False
 		self.__proxies = []
 
-	def start(self):
+	def run_main_loop(self):
 		assert not self.__running
 
 		self.__running = True
 
 		try:
 			while self.__running:
-				print 'listening...'
-
 				self.__socket.listen(1)
 				s, addr = self.__socket.accept()
 
-				ret = apiclient.connect(conf.USER_NAME, conf.PASSWORD, self.__sensor_name)
+				try:
+					ret = apiclient.connect(conf.USER_NAME, conf.PASSWORD, self.__sensor_name)
+				except Exception:
+					traceback.print_exc()
+					time.sleep(3.0)
+					continue
+
 				if ret:
 					channel_server_address, channel, transfer_channel_server_address = ret
 					rx_channel = 'rx-' + str(uuid.uuid4())

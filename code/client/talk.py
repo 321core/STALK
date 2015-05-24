@@ -9,26 +9,7 @@ from clientproxy import ClientProxy
 from serverproxy import ServerProxy
 
 
-class Application(object):
-	def __init__(self):
-		super(Application, self).__init__()
-		self.__server_proxies = []
-		self.__client_proxies = []
-
-	def add_server_proxy(self, sensor_name, port):
-		proxy = ServerProxy(sensor_name, port)
-		proxy.start()
-		self.__server_proxies.append(proxy)
-
-	def add_client_proxy(self, sensor_name, server_address):
-		proxy = ClientProxy(sensor_name, server_address)
-		proxy.start()
-		self.__client_proxies.append(proxy)
-
-
 def main():
-	app = Application()
-
 	parse = optparse.OptionParser()
 	parse.add_option('--file', dest='file', type=str)
 	(options, args) = parse.parse_args()
@@ -38,7 +19,7 @@ def main():
 	if cmd == 'client':
 		sensor_name = args[1]
 		port = int(args[2])
-		app.add_server_proxy(sensor_name, port)
+		ServerProxy(sensor_name, port).run_main_loop()
 
 	elif cmd == 'server':
 		sensor_name = args[1]
@@ -50,7 +31,7 @@ def main():
 			server_name = args[2]
 			port = int(args[3])
 
-		app.add_client_proxy(sensor_name, (server_name, port))
+		ClientProxy(sensor_name, (server_name, port)).run_main_loop()
 
 	else:
 		print 'unknown command:%s' % cmd

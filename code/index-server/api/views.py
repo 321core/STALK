@@ -174,3 +174,44 @@ def sweep_garbages(req):
 		'code': error.CODE_OK
 	}
 	return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type='application/json')
+
+
+def check_listen_channel(req, user_name, sensor_name):
+	channel = req.GET.get('channel', None)
+	if not channel:
+		res = {
+			'code': error.CODE_INVALID_PARAMETER,
+		    'message': '"channel" parameter is missing.'
+		}
+		return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type='application/json')
+
+	try:
+		user = User.objects.get(username=user_name)
+	except User.DoesNotExist:
+		res = {
+			'code': error.CODE_NO_USER,
+		    'message': 'User name "%s" does not exist.' % user_name
+		}
+		return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type='application/json')
+
+	try:
+		entry = models.Entry.objects.get(user=user, sensor_name=sensor_name)
+	except models.Entry.DoesNotExist:
+		res = {
+			'code': error.CODE_NO_SENSOR,
+			'message': 'Sensor name "%s" does not exist.' % sensor_name
+		}
+		return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")
+
+	if entry.channel == channel:
+		res = {
+			'code': error.CODE_OK,
+		}
+		return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")
+
+	else:
+		res = {
+			'code': error.CODE_VALUE_MISMATCH,
+		    'message': 'sensor "%s" listen to channel "%s", but got "%s"' % (entry.sensor_name, entry.channel, channel)
+		}
+		return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")
