@@ -308,6 +308,43 @@ class Channel(Resource):
 		return message
 
 
+class Status(Resource):
+	isLeaf = True
+
+	def __init__(self, server_):
+		Resource.__init__(self)
+		self.__server = server_
+
+	def render(self, request):
+		try:
+			action = request.postpath[0]
+		except IndexError:
+			action = None
+
+		if action == 'channels':
+			return self.channels(request)
+
+		else:
+			res = NoResource(message="invalid command to server.")
+			return res.render(request)
+
+	def channels(self, request):
+		try:
+			prefix = request.args['prefix'][0]
+		except KeyError:
+			prefix = None
+
+		if prefix:
+			res = []
+			for name in self.__server.get_channel_names():
+				if name.startswith(prefix):
+					res.append(name)
+		else:
+			res = self.__server.get_channel_names()
+
+		return json.dumps(res)
+
+
 class Server(Resource):
 	isLeaf = False
 
@@ -316,12 +353,16 @@ class Server(Resource):
 
 		self.__channels = {}
 		self.__apiclient = apiclient.APIClient()
+		self.__status = Status(self)
 
 		task.LoopingCall(self.collect_garbages).start(60.0, False)
 		task.LoopingCall(self.report_to_index_server).start(3.0, False)
 
 	def getChild(self, name, request):
-		if name:  # 채널에 대한 요청이라면
+		if name:
+			if name == '__status':
+				return self.__status
+
 			try:
 				return self.__channels[name]
 

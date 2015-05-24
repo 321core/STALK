@@ -9,4 +9,5 @@ urlpatterns = [
 	url(r'^connect/(?P<user_name>.*)/(?P<sensor_name>.*)/$', 'api.views.connect', name='connect'),
 	url(r'^report_channel_server_status/(?P<server_name>.*)/$', 'api.views.report_channel_server_status',
 	    name='report_channel_server_status'),
+	url(r'^sweep_garbages/$', 'api.views.sweep_garbages', name='sweep_garbages'),
 ]

@@ -6,6 +6,9 @@ import time
 import datetime
 import uuid
 import random
+import traceback
+
+import requests
 
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -128,6 +131,44 @@ def report_channel_server_status(req, server_name):
 	server.memory_rate = memory_rate if memory_rate is not None else server.memory_rate
 	server.last_reporting_time = datetime.datetime.fromtimestamp(timestamp).replace(tzinfo=timezone.get_current_timezone())
 	server.save()
+
+	res = {
+		'code': error.CODE_OK
+	}
+	return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type='application/json')
+
+
+def sweep_garbages(req):
+	# check server is running
+	threshold = timezone.now() - datetime.timedelta(seconds=60)
+	for server in models.ChannelServer.objects.all():
+		server.is_running = (server.last_reporting_time > threshold)
+		server.save()
+
+	#
+	garbages = []
+
+	for server in models.ChannelServer.objects.all():
+		entries = models.Entry.objects.filter(channel_server=server)
+		if len(entries):
+			#
+			if not server.is_running:
+				garbages += list(entries)
+
+			else:
+				try:
+					ret = requests.get('http://%s/__status/channels/' % server.base_url)
+					if ret.ok:
+						channel_names = ret.json()
+						for entry in entries:
+							if entry.channel not in channel_names:
+								garbages.append(entry)
+
+				except Exception:
+					traceback.print_exc()
+
+			for entry in garbages:
+				entry.delete()
 
 	res = {
 		'code': error.CODE_OK
