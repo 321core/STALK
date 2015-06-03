@@ -7,7 +7,8 @@ currently, major upgrade is undergoing on master branch. major features are:
   - load balancing between multiple channel servers
   - removing base64 conversion, direct transfer octet stream (**MUCH FASTER!!**)
   - independent channel namespace per user account
-  - *remove dependency to 3rd party modules*, ie.'requests'
+  - ~~remove dependency to 3rd party modules, ie.'requests'~~
+  - using KEEP_ALIVE, much faster again.
 
 v0.1 users can check the channel list at
   http://nini.duckdns.org:8100/admin/api/entry/
