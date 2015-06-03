@@ -5,46 +5,7 @@ import time
 import socket
 import struct
 import traceback
-import urllib
-import urllib2
-
-
-def request_get(url, params=None, headers={}, timeout=10):
-	if params:
-		url += '?' + urllib.urlencode(params)
-
-	url = str(url)
-	req = urllib2.Request(url, headers=headers)
-
-	try:
-		res = urllib2.urlopen(req, timeout=timeout)
-		if res.code == 200:
-			res = res.read()
-			return res
-
-	except Exception:
-		traceback.print_exc()
-
-	return None
-
-
-def request_post(url, params=None, data=None, headers={}, timeout=10):
-	if params:
-		url += '?' + urllib.urlencode(params)
-
-	url = str(url)  # NOTE: it is needed casting to type 'str' for preventing urlopen throw Unicode encoding exception.
-	req = urllib2.Request(url, data=data, headers=headers)
-	try:
-		res = urllib2.urlopen(req, timeout=timeout)
-
-		if res.code == 200:
-			res = res.read()
-			return res
-
-	except Exception:
-		traceback.print_exc()
-
-	return None
+import requests
 
 
 class PubSubSocket(object):
@@ -53,6 +14,7 @@ class PubSubSocket(object):
 		super(PubSubSocket, self).__init__()
 		self.__channel_server_address = channel_server_address
 		self.__request_stop_receiving = False
+		self.__session = requests.Session()
 
 	def request_stop_receiving(self):
 		self.__request_stop_receiving = True
@@ -159,11 +121,11 @@ class PubSubSocket(object):
 
 		try:
 			if data is not None:
-				ret = request_post(url, params=params, data=data, headers={'Content-Type': 'application/octet-stream'}, timeout=60)
+				ret = self.do_request_post(url, params=params, data=data, headers={'Content-Type': 'application/octet-stream'}, timeout=60)
 				return ret
 
 			else:
-				ret = request_get(url, params=params, timeout=60)
+				ret = self.do_request_get(url, params=params, timeout=60)
 				return ret
 
 		except socket.timeout:
@@ -173,3 +135,20 @@ class PubSubSocket(object):
 			traceback.print_exc()
 			return None
 
+	def do_request_get(self, url, params=None, headers={}, timeout=10):
+		try:
+			ret = self.__session.get(url, params=params, headers=headers, timeout=timeout)
+			if ret.ok:
+				return ret.content
+
+		except Exception:
+			traceback.print_exc()
+
+	def do_request_post(self, url, params=None, data=None, headers={}, timeout=10):
+		try:
+			ret = self.__session.post(url, params=params, headers=headers, timeout=timeout, data=data)
+			if ret.ok:
+				return ret.content
+
+		except Exception:
+			traceback.print_exc()
