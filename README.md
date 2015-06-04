@@ -23,9 +23,9 @@ v0.1 users can check the channel list at
     - PASSWORD = "*YOUR PASSWORD*" 
 
 ### Run software 
-  1. run stalk as server connector
+  1. run Stalk and connect to the Stalk service  on the device (like a RaspberryPi2)
     - ./talk.py server VOLOSSH localhost 22
-  1. access stalked device:
+  1. to connect to stalked device from my device (like a laptop) :
     - ./talk.py client VOLOSSH 2222
-  1. making connection through SSH, if the IoT serving SSH... 
+  1. making connection through SSH, if the IoT serving SSH... on my device (the same device above laptop)
     - ssh pi@localhost -p 2222
