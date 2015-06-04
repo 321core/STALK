@@ -15,16 +15,15 @@ v0.1 users can check the channel list at
   (ID:admin, PWD:stalk)
 
 ## Run STALK
-### se
-
+### Server side
   1. edit conf/settings.conf
     - INDEX_SERVER_BASE_URL = "*STALK MASTER SERVER*"
     - USER_NAME = "*YOUR ACCOUNT*"
     - PASSWORD = "*YOUR PASSWORD*" 
+### Client side
   1. run stalk as server connector
     - ./talk.py server VOLOSSH localhost 22
   1. access stalked device:
     - ./talk.py client VOLOSSH 2222
-
   1. making connection through SSH, if the IoT serving SSH... 
     - ssh pi@localhost -p 2222
