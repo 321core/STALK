@@ -20,6 +20,7 @@ v0.1 users can check the channel list at
     - INDEX_SERVER_BASE_URL = "*STALK MASTER SERVER*"
     - USER_NAME = "*YOUR ACCOUNT*"
     - PASSWORD = "*YOUR PASSWORD*" 
+
 ### Client side
   1. run stalk as server connector
     - ./talk.py server VOLOSSH localhost 22
