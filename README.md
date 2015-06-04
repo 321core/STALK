@@ -16,14 +16,14 @@ v0.1 users can check the channel list at
 
 ## Run STALK Client
 
-### Config setting
+### Config setting on device (for example, RaspberryPi2)
   1. edit conf/settings.conf
     - INDEX_SERVER_BASE_URL = "*STALK MASTER SERVER*"
     - USER_NAME = "*YOUR ACCOUNT*"
     - PASSWORD = "*YOUR PASSWORD*" 
 
 ### Run software 
-  1. run Stalk and connect to the Stalk service  on the device (like a RaspberryPi2)
+  1. run Stalk and connect to the Stalk service on the device (like a RaspberryPi2)
     - ./talk.py server VOLOSSH localhost 22
   1. to connect to stalked device from my device (like a laptop) :
     - ./talk.py client VOLOSSH 2222
