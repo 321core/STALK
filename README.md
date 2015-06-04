@@ -14,14 +14,15 @@ v0.1 users can check the channel list at
   http://nini.duckdns.org:8100/admin/api/entry/
   (ID:admin, PWD:stalk)
 
-## Run STALK
-### Server side
+## Run STALK Client
+
+### Config setting
   1. edit conf/settings.conf
     - INDEX_SERVER_BASE_URL = "*STALK MASTER SERVER*"
     - USER_NAME = "*YOUR ACCOUNT*"
     - PASSWORD = "*YOUR PASSWORD*" 
 
-### Client side
+### Run software 
   1. run stalk as server connector
     - ./talk.py server VOLOSSH localhost 22
   1. access stalked device:
