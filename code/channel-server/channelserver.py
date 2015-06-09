@@ -3,6 +3,7 @@
 # channelserver.py
 
 
+import socket
 import time
 import struct
 import json
@@ -359,6 +360,14 @@ class Server(Resource):
 		task.LoopingCall(self.report_to_index_server).start(3.0, False)
 
 	def getChild(self, name, request):
+		#
+		sock = request.transport.socket
+		sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+		sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 1)
+		sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 3)
+		sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
+
+		#
 		if name:
 			if name == '__status':
 				return self.__status
@@ -398,7 +407,12 @@ class Server(Resource):
 		self.__apiclient.report_status(True, len(self.__channels), cpu_rate, memory_rate)
 
 
+class MySite(Site):
+	def __init__(self):
+		Site.__init__(self, Server(), timeout=60)
+
+
 # twistd -y ./channelserver.py
 application = service.Application('web')
-internet.TCPServer(conf.PORT, Site(Server())).setServiceParent(service.IServiceCollection(application))
+internet.TCPServer(conf.PORT, MySite()).setServiceParent(service.IServiceCollection(application))
 
