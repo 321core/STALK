@@ -3,10 +3,12 @@
 # talkd.py
 
 import optparse
-from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR, SO_KEEPALIVE
+from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM, SOL_SOCKET, \
+    SO_REUSEADDR, SO_KEEPALIVE, SO_BROADCAST
 import socket
 import json
 import threading
+import time
 
 import core
 
@@ -160,6 +162,20 @@ def service_handler(s, addr):
 
         except ValueError:
             pass
+
+
+# discovery
+def broadcast():
+    message = 'STALKAGENT@' + socket.gethostname()
+    s = socket.socket(AF_INET, SOCK_DGRAM)
+    s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+    while True:
+        s.sendto(message, ('<broadcast>', core.conf.BROADCAST_PORT))
+        time.sleep(3.0)
+
+t = threading.Thread(target=broadcast)
+t.setDaemon(True)
+t.start()
 
 
 # service loop

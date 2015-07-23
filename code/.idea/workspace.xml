@@ -2,47 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aee65211-6f43-4bc7-932d-efb68221d53b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/service/core/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/client/service/conf/settings.conf" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/channel-server/apiclient.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/channel-server/channelserver.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/channel-server/conf.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/channel-server/conf/settings.conf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/apiclient.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/channelproxy.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/clientproxy.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/conf.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/conf/settings.conf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/error.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/pubsubsocket.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/serverproxy.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/client/talk.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/.name" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/encodings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/inspectionProfiles/Project_Default.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/inspectionProfiles/profiles_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/misc.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/modules.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/scopes/scope_settings.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/stalk-index-server.iml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/vcs.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/.idea/workspace.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/api/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/api/admin.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/api/error.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/api/models.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/api/urls.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/api/views.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/manage.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/stalk_index_server/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/stalk_index_server/settings.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/stalk_index_server/urls.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index-server/stalk_index_server/wsgi.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/code.iml" afterPath="$PROJECT_DIR$/.idea/code.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/service/conf/settings.conf" afterPath="$PROJECT_DIR$/client/service/conf/settings.conf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/service/talkd.py" afterPath="$PROJECT_DIR$/client/service/talkd.py" />
     </list>
     <ignored path="code.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -63,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="talkd.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="talkd.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/service/talkd.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="63" column="26" selection-start-line="63" selection-start-column="26" selection-end-line="63" selection-end-column="26" />
+            <state vertical-scroll-proportion="0.3467742">
+              <caret line="168" column="19" selection-start-line="168" selection-start-column="19" selection-end-line="168" selection-end-column="19" />
               <folding>
                 <element signature="e#61#76#0" expanded="true" />
               </folding>
@@ -75,23 +36,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="talk.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/shell/talk.py">
+      <file leaf-file-name="settings.conf" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/service/conf/settings.conf">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="45" column="13" selection-start-line="45" selection-start-column="13" selection-end-line="45" selection-end-column="13" />
-              <folding>
-                <element signature="e#60#75#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="clientproxy.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/service/core/clientproxy.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3602638">
-              <caret line="113" column="37" selection-start-line="113" selection-start-column="37" selection-end-line="113" selection-end-column="37" />
+              <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -141,10 +90,10 @@
         <option value="$PROJECT_DIR$/client/service/core/__init__.py" />
         <option value="$PROJECT_DIR$/client/service/core/conf.py" />
         <option value="$PROJECT_DIR$/client/service/conf/setting.conf" />
-        <option value="$PROJECT_DIR$/client/service/conf/settings.conf" />
         <option value="$PROJECT_DIR$/client/shell/talk.py" />
-        <option value="$PROJECT_DIR$/client/service/talkd.py" />
         <option value="$PROJECT_DIR$/client/service/core/clientproxy.py" />
+        <option value="$PROJECT_DIR$/client/service/conf/settings.conf" />
+        <option value="$PROJECT_DIR$/client/service/talkd.py" />
       </list>
     </option>
   </component>
@@ -152,6 +101,7 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="913" />
     <option name="y" value="23" />
     <option name="width" value="2560" />
     <option name="height" value="1337" />
@@ -473,7 +423,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="2560" height="1337" extended-state="6" />
+    <frame x="913" y="23" width="2560" height="1337" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -622,14 +572,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/service/conf/settings.conf">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/client/shell/talk.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -640,21 +582,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/service/talkd.py">
+    <entry file="file://$PROJECT_DIR$/client/service/core/clientproxy.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="26" selection-start-line="63" selection-start-column="26" selection-end-line="63" selection-end-column="26" />
-          <folding>
-            <element signature="e#61#76#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-41.74074">
+          <caret line="113" column="37" selection-start-line="113" selection-start-column="37" selection-end-line="113" selection-end-column="37" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/service/core/clientproxy.py">
+    <entry file="file://$PROJECT_DIR$/client/service/conf/settings.conf">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3602638">
-          <caret line="113" column="37" selection-start-line="113" selection-start-column="37" selection-end-line="113" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="21" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/service/talkd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3467742">
+          <caret line="168" column="19" selection-start-line="168" selection-start-column="19" selection-end-line="168" selection-end-column="19" />
+          <folding>
+            <element signature="e#61#76#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
