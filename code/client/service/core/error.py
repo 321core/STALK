@@ -3,12 +3,12 @@
 
 
 class APIError(Exception):
-	pass
+    pass
 
 
 class AuthorizationError(APIError):
-	pass
+    pass
 
 
 class NetworkError(APIError):
-	pass
+    pass
