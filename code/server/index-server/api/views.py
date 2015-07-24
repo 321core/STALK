@@ -71,6 +71,24 @@ def listen(req, user_name, sensor_name):
     return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")
 
 
+def kill(req, user_name, sensor_name):
+    try:
+        user = User.objects.get(username=user_name)
+    except User.DoesNotExist:
+        res = {
+            'code': error.CODE_NO_USER,
+            'message': 'User name "%s" does not exist.' % user_name
+        }
+        return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type='application/json')
+
+    models.Entry.objects.filter(user=user, sensor_name=sensor_name).delete()
+    res = {
+        'code': error.CODE_OK,
+    }
+
+    return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")
+
+
 def connect(req, user_name, sensor_name):
     try:
         user = User.objects.get(username=user_name)

@@ -5,6 +5,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^listen/(?P<user_name>.*)/(?P<sensor_name>.*)/$', 'api.views.listen', name='listen'),
+    url(r'^kill/(?P<user_name>.*)/(?P<sensor_name>.*)/$', 'api.views.kill', name='kill'),
     url(r'^check_listen_channel/(?P<user_name>.*)/(?P<sensor_name>.*)/$',
         'api.views.check_listen_channel', name='check_listen_channel'),
     url(r'^connect/(?P<user_name>.*)/(?P<sensor_name>.*)/$', 'api.views.connect', name='connect'),

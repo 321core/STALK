@@ -7,6 +7,7 @@ import json
 import conf
 from clientproxy import ClientProxy
 from serverproxy import ServerProxy
+import apiclient
 
 # proxies
 proxies = []
@@ -82,6 +83,7 @@ def client(channel, port):
 def kill(id):
     p = proxy_by_id(id)
     if p:
+        apiclient.kill(conf.USER_NAME, conf.PASSWORD, p.sensor_name)
         p.stop()
         proxies.remove(p)
 

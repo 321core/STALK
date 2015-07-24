@@ -49,6 +49,27 @@ def listen(username, password, sensor_name):
         raise NetworkError('connection failed.')
 
 
+def kill(username, password, sensor_name):
+    assert isinstance(username, str)
+    assert isinstance(password, str)
+    assert isinstance(sensor_name, str)
+    # data = json.dumps({'password': password})  # NOTE: currently, not used
+
+    ret = request_get('http://%s/kill/%s/%s/' % (conf.INDEX_SERVER_BASE_URL, username, sensor_name),
+                      headers={'Content-Type': 'application/json'})
+
+    if ret is not None:
+        ret = json.loads(ret)
+        if ret['code'] == 'CODE_OK':
+            return ''
+
+        else:
+            raise APIError(ret['message'])
+
+    else:
+        raise NetworkError('connection failed.')
+
+
 def check_listen_channel(username, password, sensor_name, channel_name):
     assert isinstance(username, (str, unicode))
     assert isinstance(password, (str, unicode))
