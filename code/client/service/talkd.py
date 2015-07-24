@@ -11,6 +11,7 @@ import threading
 import time
 
 import core
+import webui
 
 
 # constants
@@ -25,109 +26,27 @@ options, args = parser.parse_args()
 service_port = options.service_port
 
 
-# proxies
-proxies = []
-next_id = 1
-
-
-def proxy_by_id(id):
-    for p in proxies:
-        if p.id == id:
-            return p
-
-
-def proxy_to_item(p):
-    if isinstance(p, core.ClientProxy):
-        return {
-            'id': p.id,
-            'kind': 'server',
-            'channel': p.sensor_name,
-            'target': p.server_address
-        }
-
-    elif isinstance(p, core.ServerProxy):
-        return {
-            'id': p.id,
-            'kind': 'client',
-            'channel': p.sensor_name,
-            'port': p.port
-        }
-
-    assert False
-
-
-# interfaces
-
-def status():
-    res = []
-    for p in proxies:
-        res.append(proxy_to_item(p))
-
-    return json.dumps(res)
-
-
-def server(channel, target):
-    global next_id
-
-    assert isinstance(channel, str)
-    assert isinstance(target, tuple)
-    assert len(target) == 2
-
-    addr, port = target
-    p = core.ClientProxy(next_id, channel, (addr, port))
-    next_id += 1
-    proxies.append(p)
-    p.start()
-
-    return ''
-
-
-def client(channel, port):
-    global next_id
-
-    assert isinstance(channel, str)
-    assert isinstance(port, int)
-
-    p = core.ServerProxy(next_id, channel, port)
-    next_id += 1
-    proxies.append(p)
-    p.start()
-
-    return ''
-
-
-def kill(id):
-    p = proxy_by_id(id)
-    if p:
-        p.stop()
-        proxies.remove(p)
-
-        return ''
-
-    return 'error'
-
-
 # service handler
 def process_line(l):
     args = l.split()
     cmd = args[0]
     if cmd == 'status':
-        return status()
+        return core.status()
 
     elif cmd == 'server':
         channel = args[1]
         addr = args[2]
         port = int(args[3])
-        return server(channel, (addr, port))
+        return core.server(channel, (addr, port))
 
     elif cmd == 'client':
         channel = args[1]
         port = int(args[2])
-        return client(channel, port)
+        return core.client(channel, port)
 
     elif cmd == 'kill':
         id = int(args[1])
-        return kill(id)
+        return core.kill(id)
 
     assert False
 
@@ -166,7 +85,7 @@ def service_handler(s, addr):
 
 # discovery
 def broadcast():
-    message = 'STALKAGENT@' + socket.gethostname()
+    message = 'STALKAGENT@' + socket.gethostname() + ':' + str(core.conf.WEBUI_PORT)
     s = socket.socket(AF_INET, SOCK_DGRAM)
     s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
     while True:
@@ -174,6 +93,12 @@ def broadcast():
         time.sleep(3.0)
 
 t = threading.Thread(target=broadcast)
+t.setDaemon(True)
+t.start()
+
+
+# web ui
+t = threading.Thread(target=webui.run)
 t.setDaemon(True)
 t.start()
 

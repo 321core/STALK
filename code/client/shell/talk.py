@@ -1,6 +1,6 @@
 #! /usr/local/bin/python
 # -*- coding: utf-8 -*-
-# main.py
+# talk.py
 
 import optparse
 import json

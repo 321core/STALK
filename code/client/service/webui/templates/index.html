@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>STALK Console</title>
+</head>
+<body>
+    <h3>status</h3>
+    <p>
+        <ul>
+        {% for item in items %}
+
+            {% if item['kind'] == 'server' %}
+                <li>
+                    {{ item['id'] }}
+                    {{ item['kind'] }}
+                    {{ item['channel'] }}
+                    {{ item['target'][0] }} : {{ item['target'][1] }}
+                </li>
+            {% endif %}
+
+            {% if item['kind'] == 'client' %}
+                <li>
+                    {{ item['id'] }}
+                    {{ item['kind'] }}
+                    {{ item['channel'] }}
+                    {{ item['port'] }}
+                </li>
+            {% endif %}
+
+        {% endfor %}
+        </ul>
+    </p>
+
+    <h3>add server</h3>
+    <p>
+        <form action="/server" method="post">
+            channel: <input type="text" name="channel"><br/>
+            server address: <input type="text" name="address"><br/>
+            server port: <input type="text" name="port"><br/>
+            <input type="submit">
+        </form>
+    </p>
+
+    <h3>add client</h3>
+    <p>
+        <form action="/client" method="post">
+            channel: <input type="text" name="channel"><br/>
+            local port: <input type="text" name="port"><br/>
+            <input type="submit">
+        </form>
+    </p>
+
+    <h3>kill</h3>
+    <p>
+        <form action="/kill" method="post">
+            id: <input type="text" name="id"><br/>
+            <input type="submit">
+        </form>
+    </p>
+</body>
+</html>
