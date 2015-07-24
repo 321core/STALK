@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 # talkd.py
 
+import sys
 import optparse
 from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM, SOL_SOCKET, \
     SO_REUSEADDR, SO_KEEPALIVE, SO_BROADCAST
@@ -122,6 +123,7 @@ try:
 
 except KeyboardInterrupt:
     print 'Good bye.'
+    raise
 
 finally:
     core.save()

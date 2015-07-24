@@ -1,1 +1,1 @@
-[{"kind": "server", "id": 1, "channel": "test99", "target": ["localhost", 22]}, {"kind": "server", "id": 2, "channel": "test100", "target": ["localhost", 80]}, {"kind": "server", "id": 3, "channel": "test101", "target": ["localhost", 21]}, {"kind": "client", "id": 4, "channel": "test10", "port": 8000}, {"kind": "client", "id": 5, "channel": "test99", "port": 2222}]
+[]
