@@ -14,6 +14,10 @@ import core
 import webui
 
 
+#
+core.restore()
+
+
 # constants
 service_port = core.conf.PORT
 
@@ -96,7 +100,6 @@ t = threading.Thread(target=broadcast)
 t.setDaemon(True)
 t.start()
 
-
 # web ui
 t = threading.Thread(target=webui.run)
 t.setDaemon(True)
@@ -109,9 +112,16 @@ s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 s.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1)
 s.bind(('localhost', service_port))
 
-while True:
-    s.listen(5)
-    c, addr = s.accept()
-    t = threading.Thread(target=service_handler, args=(c, addr))
-    t.setDaemon(True)
-    t.start()
+try:
+    while True:
+        s.listen(5)
+        c, addr = s.accept()
+        t = threading.Thread(target=service_handler, args=(c, addr))
+        t.setDaemon(True)
+        t.start()
+
+except KeyboardInterrupt:
+    print 'Good bye.'
+
+finally:
+    core.save()
