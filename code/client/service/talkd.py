@@ -113,6 +113,8 @@ s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 s.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1)
 s.bind(('localhost', service_port))
 
+save_on_exit = True
+
 try:
     while True:
         s.listen(5)
@@ -122,8 +124,13 @@ try:
         t.start()
 
 except KeyboardInterrupt:
-    print 'Good bye.'
-    raise
+    print 'Shutting down...'
+    core.killall()
+    save_on_exit = False
 
 finally:
-    core.save()
+    if save_on_exit:
+        print 'saving...'
+        core.save()
+
+print 'Good bye.'

@@ -8,6 +8,7 @@ if __name__ == '__main__':
     sys.path += [os.getcwd() + os.path.sep + '..']
 
 import json
+import socket
 
 import core
 from flask import Flask, render_template, request, redirect
@@ -17,33 +18,51 @@ app = Flask(__name__)
 
 
 @app.route('/')
+def index():
+    return render_template('index.html', hostname=socket.gethostname(),
+                           server_address=core.conf.INDEX_SERVER_BASE_URL,
+                           id=core.conf.USER_NAME, password=core.conf.PASSWORD,
+                           broadcast_port=core.conf.BROADCAST_PORT,
+                           web_port=core.conf.WEBUI_PORT)
+
+
+@app.route('/status')
 def status():
-    items = json.loads(core.status())
-    return render_template('index.html', items=items)
+    ret = json.loads(core.status())
+    return json.dumps({'code': 'success', 'result': ret})
 
 
-@app.route('/server', methods=['post'])
+@app.route('/server', methods=['get'])
 def server():
-    channel = str(request.form['channel'])
-    addr = str(request.form['address'])
-    port = int(request.form['port'])
-    core.server(channel, (addr, port))
-    return redirect('/')
+    channel = str(request.args.get('channel'))
+    addr = str(request.args.get('address'))
+    port = int(request.args.get('port'))
+    ret = core.server(channel, (addr, port))
+    if ret:
+        return json.dumps({'code': 'failure', 'message': ret})
+
+    return json.dumps({'code': 'success'})
 
 
-@app.route('/client', methods=['post'])
+@app.route('/client', methods=['get'])
 def client():
-    channel = str(request.form['channel'])
-    port = int(request.form['port'])
-    core.client(channel, port)
-    return redirect('/')
+    channel = str(request.args.get('channel'))
+    port = int(request.args.get('port'))
+    ret = core.client(channel, port)
+    if ret:
+        return json.dumps({'code': 'failure', 'message': ret})
+
+    return json.dumps({'code': 'success'})
 
 
-@app.route('/kill', methods=['post'])
+@app.route('/kill', methods=['get'])
 def kill():
-    id_ = int(request.form['id'])
-    core.kill(id_)
-    return redirect('/')
+    id_ = int(request.args.get('id'))
+    ret = core.kill(id_)
+    if ret:
+        return json.dumps({'code': 'failure', 'message': ret})
+
+    return json.dumps({'code': 'success'})
 
 
 def run():

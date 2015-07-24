@@ -80,8 +80,8 @@ def client(channel, port):
     return ''
 
 
-def kill(id):
-    p = proxy_by_id(id)
+def kill(id_):
+    p = proxy_by_id(id_)
     if p:
         apiclient.kill(conf.USER_NAME, conf.PASSWORD, p.sensor_name)
         p.stop()
@@ -90,6 +90,16 @@ def kill(id):
         return ''
 
     return 'error'
+
+
+def killall():
+    global proxies
+
+    for p in proxies:
+        apiclient.kill(conf.USER_NAME, conf.PASSWORD, p.sensor_name)
+        p.stop()
+
+    proxies = []
 
 
 # persistency

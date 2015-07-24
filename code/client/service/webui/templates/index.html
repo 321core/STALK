@@ -1,63 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>STALK Console</title>
-    <link href="/static/style.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-    <h3>status</h3>
-    <p>
-        <ul>
-        {% for item in items %}
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
 
-            {% if item['kind'] == 'server' %}
-                <li>
-                    {{ item['id'] }}
-                    {{ item['kind'] }}
-                    {{ item['channel'] }}
-                    {{ item['target'][0] }} : {{ item['target'][1] }}
-                </li>
-            {% endif %}
+    <style>
+      .angular-google-map-container {
+          width: 100%;
+          height: 504px;
+      }
+    .error {
+        padding: 0px 8px 8px 8px;
+        font-family: "Arial Black", Gadget, sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #555;
+        vertical-align: middle;
+    }
+    .error i {
+        font-size: 18px;
+        color: #B83E2C;
+        vertical-align: middle;
+    }
+    </style>
 
-            {% if item['kind'] == 'client' %}
-                <li>
-                    {{ item['id'] }}
-                    {{ item['kind'] }}
-                    {{ item['channel'] }}
-                    {{ item['port'] }}
-                </li>
-            {% endif %}
+    <link href="/static/lib/ionic/css/ionic.css" rel="stylesheet">
+    <script src="/static/lib/ionic/js/ionic.bundle.js"></script>
 
-        {% endfor %}
-        </ul>
-    </p>
+    <link href="http://code.ionicframework.com/ionicons/1.5.2/css/ionicons.min.css" rel="stylesheet">
 
-    <h3>add server</h3>
-    <p>
-        <form action="/server" method="post">
-            channel: <input type="text" name="channel"><br/>
-            server address: <input type="text" name="address"><br/>
-            server port: <input type="text" name="port"><br/>
-            <input type="submit">
-        </form>
-    </p>
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+    <script src="/static/js/app.js">
+    </script>
+  </head>
+  <body ng-app="app" animation="slide-left-right-ios7">
+  <div>
+    <div>
+        <ion-nav-bar class="bar-stable">
+            <ion-nav-back-button class="button-icon icon ion-ios7-arrow-back">Back</ion-nav-back-button>
+        </ion-nav-bar>
+        <ion-nav-view></ion-nav-view>
+    </div>
+</div>
+<script id="page1.html" type="text/ng-template">
+<ion-view title="{{hostname}}" ng-controller="mainController">
+    <ion-tabs class="tabs-dark tabs-icon-top">
+        <ion-tab title="Status" icon="ion-ios7-monitor-outline" on-select="onStatusTab()">
+            <ion-content padding="true" class="has-header">
+                <h2>Status</h2>
+                <ion-list show-swipe="true">
+                    <ion-item ng-repeat="item in items">
+                        <h2>
+                            {{'{{'}}item.channel{{'}}'}}
+                        </h2>
+                        <p ng-show="item.kind == 'server'">
+                            server {{'{{'}}item.target[0] + ' ' + item.target[1]{{'}}'}}
+                        </p>
+                        <p ng-show="item.kind == 'client'">
+                            client {{'{{'}}item.port{{'}}'}}
+                        </p>
+                        <ion-option-button class="button-assertive" ng-click="kill(item.id)">Kill</ion-option-button>
+                    </ion-item>
+                    <ion-item ng-show="!items.length">
+                        <h2>No items.</h2>
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-tab>
+        <ion-tab title="Server" icon="ion-ios7-cloud-upload" on-select="onServerTab()">
+            <ion-content padding="true" class="has-header">
+                <h2>Add Server</h2>
+                <form name="serverForm">
+                    <label class="item item-input" name="channel">
+                        <span class="input-label">Channel</span>
+                        <input type="text" name="channel" placeholder="ex. RASPI-SSH" ng-model="server.channel" required>
+                    </label>
+                    <div class="error-container">
+                        <div class="error" ng-show="serverForm.channel.$error.required">
+                            <i class="ion-information-circled"></i>
+                            Channel is required.
+                        </div>
+                    </div>
 
-    <h3>add client</h3>
-    <p>
-        <form action="/client" method="post">
-            channel: <input type="text" name="channel"><br/>
-            local port: <input type="text" name="port"><br/>
-            <input type="submit">
-        </form>
-    </p>
+                    <label class="item item-input">
+                        <span class="input-label">Server IP</span>
+                        <input type="text" name="address" placeholder="ex. localhost" ng-model="server.address" required>
+                    </label>
+                    <div class="error-container">
+                        <div class="error" ng-show="serverForm.address.$error.required">
+                            <i class="ion-information-circled"></i>
+                            Server address is required.
+                        </div>
+                    </div>
 
-    <h3>kill</h3>
-    <p>
-        <form action="/kill" method="post">
-            id: <input type="text" name="id"><br/>
-            <input type="submit">
-        </form>
-    </p>
-</body>
+                    <label class="item item-input" name="port">
+                        <span class="input-label">Server port</span>
+                        <input type="number" name="port" placeholder="ex. 22" ng-model="server.port" min="1" max="65535" required>
+                    </label>
+                    <div class="error-container">
+                        <div class="error" ng-show="serverForm.port.$error.required">
+                            <i class="ion-information-circled"></i>
+                            Server port is required.</div>
+                        <div class="error" ng-show="serverForm.port.$error.min">
+                            <i class="ion-information-circled"></i>
+                            Server port should be greater than 1.</div>
+                        <div class="error" ng-show="serverForm.port.$error.max">
+                            <i class="ion-information-circled"></i>
+                            Server port should be less than 65536.</div>
+                    </div>
+                    <button class="button button-stable button-block" ng-click="addServer()">Register</button>
+                </form>
+            </ion-content>
+        </ion-tab>
+        <ion-tab title="Client" icon="ion-ios7-cloud-download" on-select="onClientTab()">
+            <ion-content padding="true" class="has-header">
+                <h2>Add Client</h2>
+                <form name="clientForm">
+                    <label class="item item-input" name="channel">
+                        <span class="input-label">Channel</span>
+                        <input type="text" name="channel" placeholder="ex. RASPI-SH" ng-model="client.channel" required>
+                    </label>
+                    <div class="error-container">
+                        <div class="error" ng-show="clientForm.channel.$error.required">
+                            <i class="ion-information-circled"></i>
+                            Channel is required.</div>
+                    </div>
+
+                    <label class="item item-input" name="port">
+                        <span class="input-label">Local port</span>
+                        <input type="number" name="port" placeholder="ex. 2222" ng-model="client.port" min="1025" max="65535" required>
+                    </label>
+                    <div class="error-container">
+                        <div class="error" ng-show="clientForm.port.$error.required">
+                            <i class="ion-information-circled"></i>
+                            Local port is required.</div>
+                        <div class="error" ng-show="clientForm.port.$error.min">
+                            <i class="ion-information-circled"></i>
+                            Local port should be greater than 1024.</div>
+                        <div class="error" ng-show="clientForm.port.$error.max">
+                            <i class="ion-information-circled"></i>
+                            Local port should be less than 65536.</div>
+                    </div>
+                    <button class="button button-stable button-block" ng-click="addClient()">Bind</button>
+                </form>
+            </ion-content>
+        </ion-tab>
+        <ion-tab title="Setting" icon="ion-settings">
+            <ion-content padding="true" class="has-header">
+                <h2>Setting</h2>
+                <div class="list card">
+                    <div class="item item-divider">Account</div>
+                    <div class="item item-body">
+                        <form>
+                            <label class="item item-input" name="server">
+                                <span class="input-label">Server</span>
+                                <input type="text" placeholder="" value="{{server_address}}">
+                            </label>
+                            <label class="item item-input" name="id">
+                                <span class="input-label">ID</span>
+                                <input type="text" placeholder="" value="{{id}}">
+                            </label>
+                            <label class="item item-input" name="password">
+                                <span class="input-label">Password</span>
+                                <input type="password" placeholder="" value="{{password}}">
+                            </label>
+                            <button class="button button-stable button-block ">Change</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="list card">
+                    <div class="item item-divider">Ports</div>
+                    <div class="item item-body">
+                        <form>
+                            <label class="item item-input" name="broadcast_port">
+                                <span class="input-label">UDP Broadcast</span>
+                                <input type="text" placeholder="" value="{{broadcast_port}}">
+                            </label>
+                            <label class="item item-input" name="web_port">
+                                <span class="input-label">Web</span>
+                                <input type="text" placeholder="" value="{{web_port}}">
+                            </label>
+                            <button class="button button-stable button-block ">Change</button>
+                        </form>
+                    </div>
+                </div>
+            </ion-content>
+        </ion-tab>
+    </ion-tabs>
+</ion-view></script>
+  </body>
 </html>
