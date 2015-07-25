@@ -24,6 +24,12 @@
     [get_app_delegate().scanner setChangingHandler:^{
         [self reloadData];
     }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reloadData];
+        });
+        [NSThread sleepForTimeInterval:5.0];
+    });
     return self;
 }
 
@@ -57,6 +63,8 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+
     WebScreen *ws = (WebScreen *)segue.destinationViewController;
     StalkAgent *agent = get_app_delegate().scanner.agents[self.tableView.indexPathForSelectedRow.row];
     ws.address = [NSString stringWithFormat:@"http://%@:%d", agent.ip_address, agent.web_ui_port];

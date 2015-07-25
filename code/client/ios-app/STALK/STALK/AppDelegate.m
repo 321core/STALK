@@ -21,6 +21,7 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
     return YES;
 }
 

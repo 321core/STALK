@@ -88,7 +88,8 @@ angular.module('app', ['ionic'])
     };
 
     $scope.openSSH = function() {
-        document.location.href = 'http://' + window.location.hostname + ':8022';
+        var loc = 'http://' + window.location.hostname + ':8022';
+        window.location = loc;
     };
 
 })

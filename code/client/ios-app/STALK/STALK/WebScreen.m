@@ -8,7 +8,7 @@
 
 #import "WebScreen.h"
 
-@interface WebScreen ()
+@interface WebScreen ()<UIWebViewDelegate>
 
 @property (nonatomic) IBOutlet UIWebView *webView;
 
@@ -20,6 +20,11 @@
 {
     [super viewWillAppear:animated];
     [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:self.address]]];
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    return YES;
 }
 
 @end
