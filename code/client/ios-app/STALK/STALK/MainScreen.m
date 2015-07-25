@@ -18,6 +18,15 @@
 
 @implementation MainScreen
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    [get_app_delegate().scanner setChangingHandler:^{
+        [self reloadData];
+    }];
+    return self;
+}
+
 - (void)reloadData
 {
     __agents = [get_app_delegate().scanner.agents copy];
@@ -28,15 +37,6 @@
 {
     [super viewWillAppear:animated];
     [self reloadData];
-    [get_app_delegate().scanner setChangingHandler:^{
-        [self reloadData];
-    }];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [get_app_delegate().scanner setChangingHandler:nil];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
