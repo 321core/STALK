@@ -50,7 +50,7 @@
 
     StalkAgent *agent = [__agents objectAtIndex:indexPath.row];
     cell.textLabel.text = agent.host_name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@:%d", agent.ip_address, agent.web_port];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@:%d", agent.ip_address, agent.web_ui_port];
     
     return cell;
 }
@@ -59,7 +59,7 @@
 {
     WebScreen *ws = (WebScreen *)segue.destinationViewController;
     StalkAgent *agent = get_app_delegate().scanner.agents[self.tableView.indexPathForSelectedRow.row];
-    ws.address = [NSString stringWithFormat:@"http://%@:%d", agent.ip_address, agent.web_port];
+    ws.address = [NSString stringWithFormat:@"http://%@:%d", agent.ip_address, agent.web_ui_port];
 }
 
 @end

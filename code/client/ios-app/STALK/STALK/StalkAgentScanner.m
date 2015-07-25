@@ -114,26 +114,54 @@ static NSString *PREFIX = @"STALKAGENT@";
 withFilterContext:(id)filterContext
 {
     NSString *s = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-    NSAssert(s, @"");
-    //STALKAGENT@PLUG-9004:8900
-    if ([s hasPrefix:PREFIX]) {
-        BOOL dirty = NO;
 
+    //STALKAGENT@emersonMBP.local
+    //WEB_UI:8900
+    //WEB_SSH:8022
+    if ([s hasPrefix:PREFIX]) {
+        // sender address
         struct sockaddr_in *fromAddressV4 = (struct sockaddr_in *)address.bytes;
         char *fromIPAddress = inet_ntoa(fromAddressV4->sin_addr);
         NSString *ip_address = [[NSString alloc] initWithUTF8String:fromIPAddress];
 
-        int index = (int)(PREFIX.length);
-        s = [s substringFromIndex:index];
-        index = (int)[s rangeOfString:@":"].location;
+        // parse message
+        BOOL dirty = NO;
+        NSString *host_name = nil;
+        int web_ui_port = 0;
+        int web_ssh_port = 0;
 
-        NSString *host_name = [s substringToIndex:index];
-        int web_port = [[s substringFromIndex:index + 1] intValue];
+        NSArray *lines = [s componentsSeparatedByString:@"\n"];
+
+        // first line
+        s = lines[0];
+        if (s) {
+            int index = (int)(PREFIX.length);
+            host_name = [s substringFromIndex:index];
+        }
+
+        // remaining lines
+        for (int i = 1; i < lines.count; ++i) {
+            NSString *s = lines[i];
+            if ([s hasPrefix:@"WEB_UI:"]) {
+                int index = (int)(@"WEB_UI:".length);
+                web_ui_port = [[s substringFromIndex:index] intValue];
+            }
+            else if ([s hasPrefix:@"WEB_SSH:"]) {
+                int index = (int)(@"WEB_SSH:".length);
+                web_ssh_port = [[s substringFromIndex:index] intValue];
+            }
+        }
 
         StalkAgent *agent = __host_to_agents[host_name];
         if (agent) {
-            if (agent.web_port != web_port) {
-                agent.web_port = web_port;
+            if (agent.web_ui_port != web_ui_port) {
+                agent.web_ui_port = web_ui_port;
+                agent.update_time = [NSDate date];
+                dirty = YES;
+            }
+
+            if (agent.web_ssh_port != web_ssh_port) {
+                agent.web_ssh_port = web_ssh_port;
                 agent.update_time = [NSDate date];
                 dirty = YES;
             }
@@ -147,7 +175,8 @@ withFilterContext:(id)filterContext
         else {
             agent = [StalkAgent new];
             agent.host_name = host_name;
-            agent.web_port = web_port;
+            agent.web_ui_port = web_ui_port;
+            agent.web_ssh_port = web_ssh_port;
             agent.ip_address = ip_address;
             agent.update_time = [NSDate date];
             __host_to_agents[host_name] = agent;

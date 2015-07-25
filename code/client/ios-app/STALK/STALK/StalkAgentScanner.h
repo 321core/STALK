@@ -11,7 +11,8 @@
 @interface StalkAgent : NSObject
 @property NSString *host_name;
 @property NSString *ip_address;
-@property int web_port;
+@property int web_ui_port;
+@property int web_ssh_port;
 @property NSDate *update_time;
 @end
 

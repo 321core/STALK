@@ -3,6 +3,7 @@
 # talkd.py
 
 import sys
+import os
 import optparse
 from socket import AF_INET, SOCK_STREAM, SOCK_DGRAM, SOL_SOCKET, \
     SO_REUSEADDR, SO_KEEPALIVE, SO_BROADCAST
@@ -10,6 +11,7 @@ import socket
 import json
 import threading
 import time
+import subprocess
 
 import core
 import webui
@@ -90,7 +92,7 @@ def service_handler(s, addr):
 
 # discovery
 def broadcast():
-    message = 'STALKAGENT@' + socket.gethostname() + ':' + str(core.conf.WEBUI_PORT)
+    message = 'STALKAGENT@%s\nWEB_UI:%d\nWEB_SSH:%d' % (socket.gethostname(), core.conf.WEBUI_PORT, core.conf.WEBSSH_PORT)
     s = socket.socket(AF_INET, SOCK_DGRAM)
     s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
     while True:
@@ -105,6 +107,12 @@ t.start()
 t = threading.Thread(target=webui.run)
 t.setDaemon(True)
 t.start()
+
+# web SSH
+path = os.path.dirname(os.path.abspath(__file__))
+path = os.path.join(path, 'webshell')
+path = os.path.join(path, 'webshell.py')
+web_ssh_process = subprocess.Popen(['python', path, '-i', '0.0.0.0', '-p', str(core.conf.WEBSSH_PORT), '--ssl-disable'])
 
 
 # service loop
@@ -129,6 +137,7 @@ except KeyboardInterrupt:
     save_on_exit = False
 
 finally:
+    web_ssh_process.kill()
     if save_on_exit:
         print 'saving...'
         core.save()
