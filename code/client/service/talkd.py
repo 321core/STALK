@@ -97,7 +97,8 @@ def service_handler(s, addr):
 
 # discovery
 def broadcast():
-    message = 'STALKAGENT@%s\nWEB_UI:%d\nWEB_SSH:%d' % (socket.gethostname(), core.conf.WEBUI_PORT, core.conf.WEBSSH_PORT)
+    message = 'STALKAGENT@%s\nWEB_UI:%d\nWEB_SSH:%d\nACCOUNT:%s' % \
+              (socket.gethostname(), core.conf.WEBUI_PORT, core.conf.WEBSSH_PORT, core.conf.USER_NAME)
     s = socket.socket(AF_INET, SOCK_DGRAM)
     s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
     while True:

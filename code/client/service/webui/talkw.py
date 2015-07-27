@@ -29,7 +29,7 @@ def index():
 @app.route('/status')
 def status():
     ret = json.loads(core.status())
-    return json.dumps({'code': 'success', 'result': ret})
+    return json.dumps({'code': 'success', 'result': ret, 'account': core.conf.USER_NAME})
 
 
 @app.route('/server', methods=['get'])
