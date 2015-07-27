@@ -15,19 +15,26 @@ import apiclient
 
 
 class ServerProxy(object):
-    def __init__(self, id, sensor_name, port):
+    def __init__(self, id, sensor_name, port=None):
         assert isinstance(id, int)
-        assert isinstance(port, int)
+        assert port is None or isinstance(port, int)
         assert isinstance(sensor_name, str)
 
         super(ServerProxy, self).__init__()
 
         self.__id = id
-        self.__port = port
         self.__sensor_name = sensor_name
         self.__socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
         self.__socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.__socket.bind(('', self.__port))
+
+        if port is None:
+            self.__socket.bind(('', 0))
+            self.__port = self.__socket.getsockname()[1]
+
+        else:
+            self.__port = port
+            self.__socket.bind(('', self.__port))
+
         self.__running = False
         self.__proxies = []
         self.__thread = None

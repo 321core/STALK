@@ -48,8 +48,13 @@ def process_line(l):
 
     elif cmd == 'client':
         channel = args[1]
-        port = int(args[2])
-        return core.client(channel, port)
+        try:
+            port = int(args[2])
+        except IndexError:
+            port = None
+
+        real_port = core.client(channel, port)
+        return '%d' % real_port
 
     elif cmd == 'kill':
         id = int(args[1])

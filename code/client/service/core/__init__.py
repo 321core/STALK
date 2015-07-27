@@ -66,18 +66,18 @@ def server(channel, target):
     return ''
 
 
-def client(channel, port):
+def client(channel, port=None):
     global next_id
 
     assert isinstance(channel, str)
-    assert isinstance(port, int)
+    assert port is None or isinstance(port, int)
 
     p = ServerProxy(next_id, channel, port)
     next_id += 1
     proxies.append(p)
     p.start()
 
-    return ''
+    return p.port
 
 
 def kill(id_):

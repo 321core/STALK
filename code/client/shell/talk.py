@@ -102,20 +102,22 @@ def server(channel, target):
 
 def client(channel, port):
     assert isinstance(channel, str)
-    assert isinstance(port, int)
+    assert port is None or isinstance(port, int)
 
-    line = 'client %s %d' % (channel, port)
+    if port is None:
+        line = 'client %s' % channel
+
+    else:
+        line = 'client %s %d' % (channel, port)
 
     try:
         ret = request(line)
-        assert isinstance(ret, str)
 
     except RequestError, e:
         print e.message
         return
 
-    if ret:
-        print ret
+    return ret
 
 
 def kill(id):
@@ -159,8 +161,15 @@ elif cmd == 'server':
 
 elif cmd == 'client':
     channel = args[1]
-    port = int(args[2])
-    client(channel, port)
+
+    port = None
+    if len(args) >= 3:
+        port = int(args[2])
+
+    ret = client(channel, port)
+
+    if port is None:
+        print 'Local port:%d' % ret
 
 elif cmd == 'kill':
     id = int(args[1])

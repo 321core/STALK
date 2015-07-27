@@ -47,12 +47,14 @@ def server():
 @app.route('/client', methods=['get'])
 def client():
     channel = str(request.args.get('channel'))
-    port = int(request.args.get('port'))
-    ret = core.client(channel, port)
-    if ret:
-        return json.dumps({'code': 'failure', 'message': ret})
 
-    return json.dumps({'code': 'success'})
+    try:
+        port = int(request.args.get('port'))
+    except TypeError:
+        port = None
+
+    ret = core.client(channel, port)
+    return json.dumps({'code': 'success', 'port': ret})
 
 
 @app.route('/kill', methods=['get'])
