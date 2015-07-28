@@ -1,4 +1,4 @@
-# STALK
+# STALK (KETI server version. 125.x.x.52)
 
 ## Notice
 now branch 'v0.1' has been created.
