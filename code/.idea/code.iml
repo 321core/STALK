@@ -9,6 +9,7 @@
       <sourceFolder url="file://$MODULE_DIR$/server/channel-server" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/server/index-server" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/server/auto-bind-server" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/server/revproxy_server" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Python 2.7.10 (/usr/local/Cellar/python/2.7.10_1/Frameworks/Python.framework/Versions/2.7/bin/python2.7)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

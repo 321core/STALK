@@ -260,7 +260,7 @@ def bind():
     ret = server.bind(account, channel)
     if ret:
         ip_address, port = ret
-        return json.dumps({'code': 'sucess', 'ip_address': ip_address, 'port': port})
+        return json.dumps({'code': 'success', 'ip_address': ip_address, 'port': port})
 
     return json.dumps({'code': 'failure'})
 
