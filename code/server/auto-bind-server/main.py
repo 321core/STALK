@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 # main.py
 
-import socket
 import random
 import json
 import threading
 import time
-import traceback
+import socket
 
 import requests
 from flask import Flask, request

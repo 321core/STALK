@@ -28,12 +28,12 @@ class ServerProxy(object):
         self.__socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         if port is None:
-            self.__socket.bind(('', 0))
+            self.__socket.bind(('0.0.0.0', 0))
             self.__port = self.__socket.getsockname()[1]
 
         else:
             self.__port = port
-            self.__socket.bind(('', self.__port))
+            self.__socket.bind(('0.0.0.0', self.__port))
 
         self.__running = False
         self.__proxies = []
@@ -69,7 +69,7 @@ class ServerProxy(object):
 
         try:
             while self.__running:
-                self.__socket.listen(1)
+                self.__socket.listen(5)
                 s, addr = self.__socket.accept()
 
                 try:
