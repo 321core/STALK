@@ -14,6 +14,10 @@
 1. wget https://raw.githubusercontent.com/321core/STALK-INSTALL/master/install-rasberry.sh
 2. sh install-rasberry.sh
 
+## Cygwin
+1. wget https://raw.githubusercontent.com/321core/STALK-INSTALL/master/install-cygwin.sh
+2. sh install-cygwin.sh
+
 
 # How To Use
 
