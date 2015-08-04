@@ -55,27 +55,31 @@ def status():
         return
 
     assert isinstance(items, list)
-    print 'id\ttype\tchannel\tdescription'
-    print '-' * 80
-    for item in items:
-        assert isinstance(item, dict)
-        assert 'kind' in item
-        assert item['kind'] in ('server', 'client')
-        assert 'channel' in item
 
-        if item['kind'] == 'server':
-            assert 'target' in item
-            assert isinstance(item['target'], list)
-            assert len(item['target']) == 2
-            addr, port = item['target']
-            txt = '%s:%d' % (addr, port)
+    if items:
+        print 'id\ttype\tchannel\tdescription'
+        print '-' * 80
+        for item in items:
+            assert isinstance(item, dict)
+            assert 'kind' in item
+            assert item['kind'] in ('server', 'client')
+            assert 'channel' in item
 
-        elif item['kind'] == 'client':
-            assert 'port' in item
-            assert isinstance(item['port'], int)
-            txt = '%d' % item['port']
+            if item['kind'] == 'server':
+                assert 'target' in item
+                assert isinstance(item['target'], list)
+                assert len(item['target']) == 2
+                addr, port = item['target']
+                txt = '%s:%d' % (addr, port)
 
-        print '%d\t%s\t%s\t%s' % (item['id'], item['kind'], item['channel'], txt)
+            elif item['kind'] == 'client':
+                assert 'port' in item
+                assert isinstance(item['port'], int)
+                txt = '%d' % item['port']
+
+            print '%d\t%s\t%s\t%s' % (item['id'], item['kind'], item['channel'], txt)
+    else:
+        print 'No any entries.'
 
 
 def server(channel, target):
