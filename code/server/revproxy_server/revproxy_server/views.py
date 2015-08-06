@@ -40,5 +40,5 @@ def index(req, path):
         port = int(ret.json()['port'])
         return get_proxy_view(ip_address, port).as_view()(req, path=path)
 
-    return HttpResponseNotFound('<h1>Channel Not Found</h1>')
+    return HttpResponseNotFound('<h1>Channel Not Found</h1><p>channel:%s<br/>account:%s</p>' % (channel, account))
 
