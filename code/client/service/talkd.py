@@ -15,6 +15,7 @@ import subprocess
 
 import core
 import webui
+import traceback
 
 
 #
@@ -99,11 +100,23 @@ def service_handler(s, addr):
 def broadcast():
     message = 'STALKAGENT@%s\nWEB_UI:%d\nWEB_SSH:%d\nACCOUNT:%s' % \
               (socket.gethostname(), core.conf.WEBUI_PORT, core.conf.WEBSSH_PORT, core.conf.USER_NAME)
-    s = socket.socket(AF_INET, SOCK_DGRAM)
-    s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+
+    s = None
+
     while True:
-        s.sendto(message, ('<broadcast>', core.conf.BROADCAST_PORT))
-        time.sleep(3.0)
+        try:
+            if s is None:
+                s = socket.socket(AF_INET, SOCK_DGRAM)
+                s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
+
+            s.sendto(message, ('<broadcast>', core.conf.BROADCAST_PORT))
+            time.sleep(3.0)
+
+        except Exception:
+            traceback.print_exc()
+            time.sleep(1.0)
+            s = None
+
 
 t = threading.Thread(target=broadcast)
 t.setDaemon(True)
