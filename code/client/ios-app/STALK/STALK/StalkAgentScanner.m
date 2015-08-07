@@ -38,14 +38,7 @@ static NSString *PREFIX = @"STALKAGENT@";
     __agents = [NSMutableArray new];
     __host_to_agents = [NSMutableDictionary new];
 
-    __socket = [[GCDAsyncUdpSocket alloc]initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-
-    NSError *error;
-    [__socket bindToPort:BROADCAST_PORT error:&error];
-    NSAssert(error == nil, @"");
-
-    [__socket beginReceiving:&error];
-    NSAssert(error == nil, @"");
+    __socket = [self createUdpSocket];
 
     //
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -58,6 +51,20 @@ static NSString *PREFIX = @"STALKAGENT@";
     });
 
     return self;
+}
+
+- (GCDAsyncUdpSocket *)createUdpSocket
+{
+    GCDAsyncUdpSocket *s = [[GCDAsyncUdpSocket alloc]initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+
+    NSError *error;
+    [s bindToPort:BROADCAST_PORT error:&error];
+    NSAssert(error == nil, @"");
+
+    [s beginReceiving:&error];
+    NSAssert(error == nil, @"");
+
+    return s;
 }
 
 - (NSArray *)agents
@@ -190,7 +197,12 @@ withFilterContext:(id)filterContext
             __callback();
         }
     }
-
 }
+
+- (void)udpSocketDidClose:(GCDAsyncUdpSocket *)sock withError:(NSError *)error
+{
+    __socket = [self createUdpSocket];
+}
+
 
 @end
