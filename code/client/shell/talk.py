@@ -20,7 +20,9 @@ def request(line):
     assert isinstance(line, str)
     s = socket.socket(AF_INET, SOCK_STREAM)
     s.setsockopt(SOL_SOCKET, SO_KEEPALIVE, 1)
-    #s.setsockopt(IPPROTO_TCP, TCP_KEEPIDLE, 1)
+    if hasattr(socket, 'TCP_KEEPIDLE'):
+        s.setsockopt(IPPROTO_TCP, socket.TCP_KEEPIDLE, 1)
+
     s.setsockopt(IPPROTO_TCP, TCP_KEEPINTVL, 3)
     s.setsockopt(IPPROTO_TCP, TCP_KEEPCNT, 5)
 
@@ -172,8 +174,12 @@ elif cmd == 'client':
 
     ret = client(channel, port)
 
-    if port is None:
+    if isinstance(ret, int) and port is None:
         print 'Local port:%d' % ret
+
+    if isinstance(ret, (str, unicode)):
+        print ret
+
 
 elif cmd == 'kill':
     id = int(args[1])

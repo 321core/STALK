@@ -77,9 +77,9 @@ def client(channel, port=None):
         p = ServerProxy(next_id, channel, port)
     except socket.error:
         if isinstance(port, int):
-            return 'port %d is already occupied.' % port
+            return '"port %d is already occupied."' % port
 
-        return 'error occured.'
+        return '"error occured."'
 
     next_id += 1
     proxies.append(p)
