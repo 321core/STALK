@@ -55,10 +55,18 @@ angular.module('app', ['ionic'])
             url: '/client',
             params: {channel: $scope.client.channel, port: $scope.client.port}
         }).success(function(response){
-            $ionicPopup.alert({
-                title: 'Add Client',
-                template: 'Client item is successfully created.'
-            });
+            if (response.code == 'success') {
+                $ionicPopup.alert({
+                    title: 'Add Client',
+                    template: 'Client item is successfully created.'
+                });
+            }
+            else {
+                $ionicPopup.alert({
+                    title: 'Add Client',
+                    template: response.message
+                });
+            }
 
         }).error(function(error){
             $ionicPopup.alert({

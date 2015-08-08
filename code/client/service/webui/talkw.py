@@ -53,7 +53,7 @@ def client():
     except TypeError:
         port = None
 
-    ret = core.client(channel, port)
+    ret = json.loads(core.client(channel, port))
     if isinstance(ret, (str, unicode)):
         return json.dumps({'code': 'failure', 'message': ret})
 

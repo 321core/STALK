@@ -85,7 +85,7 @@ def client(channel, port=None):
     proxies.append(p)
     p.start()
 
-    return p.port
+    return '%d' % p.port
 
 
 def kill(id_):
