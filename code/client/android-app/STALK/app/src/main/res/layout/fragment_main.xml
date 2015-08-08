@@ -22,5 +22,10 @@
             android:id="@+id/listView"
             android:layout_gravity="center_horizontal"
             android:choiceMode="singleChoice" />
+
+        <TextView android:id="@android:id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No agent detected." />
     </LinearLayout>
 </RelativeLayout>

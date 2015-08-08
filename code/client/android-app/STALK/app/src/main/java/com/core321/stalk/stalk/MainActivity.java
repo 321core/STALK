@@ -2,6 +2,7 @@ package com.core321.stalk.stalk;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.SimpleAdapter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import android.content.Intent;
 
 
 public class MainActivity extends AppCompatActivity implements StalkAgentScanner.Listener {
@@ -40,6 +42,18 @@ public class MainActivity extends AppCompatActivity implements StalkAgentScanner
 
         //
         scanner.start(this);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ///// TEST
+                StalkAgent a = new StalkAgent();
+                a.ipAddress = "naver.com";
+                a.webUiPort = 80;
+                a.hostName = "NAVER";
+                agentTapped(a);
+            }
+        }, 1000 * 5);
     }
 
     @Override
@@ -60,7 +74,14 @@ public class MainActivity extends AppCompatActivity implements StalkAgentScanner
     }
 
     void agentTapped(StalkAgent agent) {
+        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+        Bundle b = new Bundle();
+        b.putString("url", "http://" + agent.ipAddress + ":" + agent.webUiPort);
+        b.putString("title", agent.hostName);
+        intent.putExtras(b);
+        startActivity(intent);
 
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
     @Override
