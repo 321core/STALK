@@ -3,6 +3,7 @@
 
 import os
 import json
+import socket
 
 import conf
 from clientproxy import ClientProxy
@@ -72,7 +73,14 @@ def client(channel, port=None):
     assert isinstance(channel, str)
     assert port is None or isinstance(port, int)
 
-    p = ServerProxy(next_id, channel, port)
+    try:
+        p = ServerProxy(next_id, channel, port)
+    except socket.error:
+        if isinstance(port, int):
+            return 'port %d is already occupied.' % port
+
+        return 'error occured.'
+
     next_id += 1
     proxies.append(p)
     p.start()

@@ -55,8 +55,11 @@ def process_line(l):
         except IndexError:
             port = None
 
-        real_port = core.client(channel, port)
-        return '%d' % real_port
+        ret = core.client(channel, port)
+        if isinstance(ret, (str, unicode)):
+            return ret
+        else:
+            return '%d' % ret
 
     elif cmd == 'kill':
         id = int(args[1])
