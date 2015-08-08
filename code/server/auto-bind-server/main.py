@@ -36,16 +36,18 @@ class Entry(object):
 
 
 class Agent(object):
-    def __init__(self, hostname, ip_address, port, account):
+    def __init__(self, hostname, ip_address, port, account, server_key):
         assert isinstance(hostname, str)
         assert isinstance(ip_address, str)
         assert isinstance(port, int)
         assert isinstance(account, str)
+        assert isinstance(server_key, str)
 
         super(Agent, self).__init__()
         self.__hostname = hostname
         self.__ip_address = ip_address
         self.__port = port
+        self.__server_key = server_key
         self.__account = account
         self.__entries = []
         self.__update_time = time.time()
@@ -82,6 +84,10 @@ class Agent(object):
     @property
     def account(self):
         return self.__account
+
+    @property
+    def server_key(self):
+        return self.__server_key
 
     def entries_for_channel(self, channel, port=None):
         assert isinstance(channel, str)
@@ -123,7 +129,7 @@ class Agent(object):
 
 
 class BindServer(object):
-    def __init__(self):
+    def __init__(self, index_server):
         super(BindServer, self).__init__()
 
         self.__agents = []
@@ -131,6 +137,8 @@ class BindServer(object):
         self.__detector_thread = None
         self.__sweeper_thread = None
         self.__stop = False
+        self.__server_key = None
+        self.__index_server_address = index_server
 
     def agents_for_account(self, account):
         res = []
@@ -167,9 +175,20 @@ class BindServer(object):
 
             return e.agent.ip_address, e.port
 
+    def update_server_key(self):
+        try:
+            url = 'http://%s/identity/' % self.__index_server_address
+            ret = requests.get(url, timeout=1.5)
+            self.__server_key = ret.json()['result']['identity']
+
+        except Exception:
+            pass
+
     def start(self):
         assert not self.__detector_thread
         self.__stop = False
+        self.update_server_key()
+
         self.__detector_thread = threading.Thread(target=self.__detector)
         self.__detector_thread.start()
 
@@ -192,7 +211,7 @@ class BindServer(object):
 
             garbages = []
             for a in agents:
-                if a.last_updated_time < cur - 10.0:
+                if a.last_updated_time < cur - 10.0 or a.server_key != self.__server_key:
                     garbages.append(a)
                 elif a.status_updated_time < cur - 3.0:
                     a.update_status()
@@ -203,6 +222,7 @@ class BindServer(object):
                     print 'Agent removed / %s(%s:%d)' % (a.hostname, a.ip_address, a.port)
 
             time.sleep(1.0)
+            self.update_server_key()
 
     def __detector(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -213,11 +233,12 @@ class BindServer(object):
             msg, addr = s.recvfrom(4096)
 
             # parse messsage
-            # message = 'STALKAGENT@%s\nWEB_UI:%d\nWEB_SSH:%d\nACCOUNT:%s'
+            # message = 'STALKAGENT@%s\nWEB_UI:%d\nWEB_SSH:%d\nACCOUNT:%s\nSERVER:%s'
             if msg.startswith('STALKAGENT@'):
                 added = []
                 port = None
                 account = None
+                server_key = None
 
                 lines = msg.split('\n')
                 hostname = lines[0].split('@')[1]
@@ -228,8 +249,10 @@ class BindServer(object):
                         port = int(v)
                     elif k == 'ACCOUNT':
                         account = v
+                    elif k == 'SERVER':
+                        server_key = v
 
-                if port is not None and account is not None:
+                if port is not None and account is not None and server_key == self.__server_key:
                     ip_address, _ = addr
                     a = self.get_agents(account, ip_address, port)
                     if a:
@@ -237,7 +260,7 @@ class BindServer(object):
                             agent.updated()
 
                     else:
-                        a = Agent(hostname, ip_address, port, account)
+                        a = Agent(hostname, ip_address, port, account, server_key)
                         added.append(a)
 
                 if added:
@@ -245,7 +268,7 @@ class BindServer(object):
                         self.__agents += added
 
                     for a in added:
-                        print 'Agent detected / %s(%s:%d)' % (hostname, ip_address, port)
+                        print 'Agent detected!\n\t%s(%s:%d) -> %s' % (a.hostname, a.ip_address, a.port, a.server_key)
 
             time.sleep(1.0)
 
@@ -266,7 +289,7 @@ def bind():
 
 
 if __name__ == '__main__':
-    server = BindServer()
+    server = BindServer('localhost/stalk/master/api')
     server.start()
 
     try:

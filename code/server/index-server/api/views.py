@@ -9,10 +9,10 @@ import random
 import traceback
 
 import requests
-
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.utils import timezone
+
 import models
 import error
 
@@ -234,3 +234,20 @@ def check_listen_channel(req, user_name, sensor_name):
             'message': 'sensor "%s" listen to channel "%s", but got "%s"' % (entry.sensor_name, entry.channel, channel)
         }
         return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")
+
+
+def identity(req):
+    try:
+        key = models.Identity.objects.latest('creation_time')
+    except models.Identity.DoesNotExist:
+        key = models.Identity()
+        key.unique_id = str(uuid.uuid4())
+        key.save()
+
+    res = {
+        'code': error.CODE_OK,
+        'result': {
+            'identity': key.unique_id,
+        }
+    }
+    return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")

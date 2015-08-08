@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^report_channel_server_status/(?P<server_name>.*)/$', 'api.views.report_channel_server_status',
         name='report_channel_server_status'),
     url(r'^sweep_garbages/$', 'api.views.sweep_garbages', name='sweep_garbages'),
+    url(r'^identity/$', 'api.views.identity', name='identity'),
 ]

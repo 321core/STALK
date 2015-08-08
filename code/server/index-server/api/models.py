@@ -30,3 +30,11 @@ class Entry(models.Model):
 
     def __unicode__(self):
         return u'%s@%s' % (self.sensor_name, self.last_listening_time)
+
+
+class Identity(models.Model):
+    unique_id = models.CharField(db_index=True, max_length=36)
+    creation_time = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return u'%s@%s' % (self.unique_id, self.creation_time)
