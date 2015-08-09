@@ -1,0 +1,19 @@
+>> 윈도우즈 8 에러
+> cygwin 설치후 실행
+
+tinyos@NUC /cygdrive/c/Users/tinyos/Anaconda/devel/danalytics/raspi/stalk-keti
+$ python --version
+Python 2.7.9 :: Anaconda 2.2.0 (64-bit)
+
+tinyos@NUC /cygdrive/c/Users/tinyos/Anaconda/devel/danalytics/raspi/stalk-keti
+$ python talk.py client kangsu-desk-01 2222
+Traceback (most recent call last):
+  File "talk.py", line 41, in <module>
+    main()
+  File "talk.py", line 22, in main
+    ServerProxy(sensor_name, port).run_main_loop()
+  File "C:\Users\tinyos\Anaconda\devel\danalytics\raspi\stalk-keti\serverproxy.py", line 27, in __init__
+    self.__socket.bind(('', self.__port))
+  File "C:\Users\tinyos\Anaconda\lib\socket.py", line 224, in meth
+    return getattr(self._sock,name)(*args)
+socket.error: [Errno 10013]
