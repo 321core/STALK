@@ -4,6 +4,10 @@
 1. wget https://raw.githubusercontent.com/321core/STALK-INSTALL/master/install-ubuntu.sh
 2. sh install-ubuntu.sh
 
+## CentOS
+1. wget https://raw.githubusercontent.com/321core/STALK-INSTALL/master/install-centos.sh
+2. sh install-centos.sh
+
 ## OS-X
 1. First, git should be installed on your mac.
 2. wget https://raw.githubusercontent.com/321core/STALK-INSTALL/master/install-osx.sh
