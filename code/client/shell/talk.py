@@ -31,7 +31,7 @@ def request(line):
         s.sendall(line + '\n')
         buf = ''
         while not buf or buf[-1] != '\0':
-            ret = s.recv(4096)
+            ret = s.recv(4096 * 1024)
             if not ret:
                 raise RequestError('stalk service error.')
 
