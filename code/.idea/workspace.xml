@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="aee65211-6f43-4bc7-932d-efb68221d53b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/shell/talk.py" afterPath="$PROJECT_DIR$/client/shell/talk.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/service/talkd.py" afterPath="$PROJECT_DIR$/client/service/talkd.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="aee65211-6f43-4bc7-932d-efb68221d53b" name="Default" comment="" />
     <ignored path="code.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,8 +24,8 @@
       <file leaf-file-name="talkd.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/client/service/talkd.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.33333334">
-              <caret line="72" column="36" selection-start-line="72" selection-start-column="36" selection-end-line="72" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.5714286">
+              <caret line="83" column="8" selection-start-line="83" selection-start-column="8" selection-end-line="83" selection-end-column="8" />
               <folding>
                 <element signature="e#55#64#0" expanded="true" />
               </folding>
@@ -881,8 +877,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/service/talkd.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334">
-          <caret line="72" column="36" selection-start-line="72" selection-start-column="36" selection-end-line="72" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.5714286">
+          <caret line="83" column="8" selection-start-line="83" selection-start-column="8" selection-end-line="83" selection-end-column="8" />
           <folding>
             <element signature="e#55#64#0" expanded="true" />
           </folding>

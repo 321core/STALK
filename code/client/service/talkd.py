@@ -70,7 +70,7 @@ def service_handler(s, addr):
     buf = ''
     while True:
         try:
-            ret = s.recv(4096 * 1024)
+            ret = s.recv(4096)
             if not ret:
                 s.close()
                 return
