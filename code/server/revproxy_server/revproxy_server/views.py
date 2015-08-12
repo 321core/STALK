@@ -4,6 +4,7 @@
 import requests
 from revproxy.views import ProxyView
 from django.http import HttpResponseNotFound
+from django.views.decorators.csrf import csrf_exempt
 
 
 __proxy_views = {}
@@ -27,6 +28,7 @@ def get_proxy_view(ip_address, port):
     return __proxy_views[key]
 
 
+@csrf_exempt
 def index(req, path):
     hostname = req.META['HTTP_HOST']
     arr = hostname.split('.')
