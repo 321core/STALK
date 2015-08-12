@@ -56,21 +56,17 @@ class ServerProxy(object):
         self.__thread = threading.Thread(target=self.run_main_loop)
         self.__thread.start()
 
-    def stop(self):
-        assert self.__thread
-        self.__running = False
-        self.__thread.join()
-        self.__thread = None
-
     def run_main_loop(self):  # TODO: check channel proxies health, if not synchronized too long, should kill it.
         assert not self.__running
 
         self.__running = True
 
         try:
+            self.__socket.listen(5)
             while self.__running:
-                self.__socket.listen(5)
                 s, addr = self.__socket.accept()
+                if not self.__running:
+                    break
 
                 try:
                     ret = apiclient.connect(conf.USER_NAME, conf.PASSWORD, self.__sensor_name)
@@ -106,6 +102,10 @@ class ServerProxy(object):
             self.__proxies = []
 
     def stop(self):
+        assert self.__thread
         self.__running = False
+        socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0).connect(('127.0.0.1', self.__port))
         self.__socket.close()
         self.__socket = None
+        self.__thread.join()
+        self.__thread = None
