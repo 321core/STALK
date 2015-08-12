@@ -42,7 +42,7 @@ http://321core.github.io/STALK
    You can check it by entering the url of 'http://localhost:8900' in the Chrome browser. 
    If pop up a page correctly, stalk is successfully installed.
 
-
+-
 ### How To Use
 
 Coming Soon...
