@@ -19,6 +19,9 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         webView = (WebView)findViewById(R.id.webView);
+        webView.setWebViewClient(new WebViewClient());
+        webView.setWebChromeClient(new WebChromeClient());
+
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         /*
@@ -34,7 +37,6 @@ public class WebViewActivity extends AppCompatActivity {
         settings.setUseWideViewPort(true);
 
         webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-        webView.setWebViewClient(new WebViewClient());
 */
 
         setTitle(getIntent().getStringExtra("title"));

@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.HashMap;
 import android.content.Intent;
 import android.widget.TextView;
+import android.net.Uri;
 
 
 public class MainActivity extends AppCompatActivity implements StalkAgentScanner.Listener {
@@ -72,13 +73,17 @@ public class MainActivity extends AppCompatActivity implements StalkAgentScanner
     }
 
     void agentTapped(StalkAgent agent) {
-        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
-        Bundle b = new Bundle();
-        b.putString("url", "http://" + agent.ipAddress + ":" + agent.webUiPort);
-        b.putString("title", agent.hostName);
-        intent.putExtras(b);
-        startActivity(intent);
+//        Intent intent = new Intent(MainActivity.this, WebViewActivity.class);
+//        Bundle b = new Bundle();
+//        b.putString("url", "http://" + agent.ipAddress + ":" + agent.webUiPort);
+//        b.putString("title", agent.hostName);
+//        intent.putExtras(b);
+//        startActivity(intent);
 
+        String url = "http://" + agent.ipAddress + ":" + agent.webUiPort;
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
