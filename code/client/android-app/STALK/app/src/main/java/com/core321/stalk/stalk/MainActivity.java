@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import android.content.Intent;
+import android.widget.TextView;
 
 
 public class MainActivity extends AppCompatActivity implements StalkAgentScanner.Listener {
@@ -42,18 +43,6 @@ public class MainActivity extends AppCompatActivity implements StalkAgentScanner
 
         //
         scanner.start(this);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ///// TEST
-                StalkAgent a = new StalkAgent();
-                a.ipAddress = "naver.com";
-                a.webUiPort = 80;
-                a.hostName = "NAVER";
-                agentTapped(a);
-            }
-        }, 1000 * 5);
     }
 
     @Override
@@ -69,6 +58,15 @@ public class MainActivity extends AppCompatActivity implements StalkAgentScanner
                     items.add(ctx);
                 }
                 listView.invalidateViews();
+
+                //
+                TextView tv = (TextView) findViewById(android.R.id.empty);
+                if (items.size() > 0) {
+                    tv.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    tv.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

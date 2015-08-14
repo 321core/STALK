@@ -53,7 +53,7 @@ public class StalkAgentScanner {
                 }
 
             }
-        });
+        }).start();
     }
 
     private void sweepGarbages() {
@@ -79,16 +79,18 @@ public class StalkAgentScanner {
             }
         }
 
-        for(String hostName : names) {
-            this.hostToAgents.remove(hostName);
-        }
-        for(StalkAgent agent : agents) {
-            this.agents.remove(agent);
-        }
+        if (names != null && agents != null) {
+            for(String hostName : names) {
+                this.hostToAgents.remove(hostName);
+            }
+            for(StalkAgent agent : agents) {
+                this.agents.remove(agent);
+            }
 
-        if (names.size() > 0) {
-            if (listener != null) {
-                listener.agentListChanged();
+            if (names.size() > 0) {
+                if (listener != null) {
+                    listener.agentListChanged();
+                }
             }
         }
     }
