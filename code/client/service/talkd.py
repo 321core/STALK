@@ -11,6 +11,7 @@ import threading
 import time
 import subprocess
 import traceback
+import json
 
 import requests
 
@@ -18,9 +19,25 @@ import core
 import webui
 
 
+def add_server_if_not_registered(channel, port):
+    for entry in json.loads(core.status()):
+        if (entry['kind'], entry['target'][0], entry['target'][1]) == ('server', 'localhost', port):
+            return
 
-#
-core.restore()
+    core.server(channel, ('localhost', port))
+
+
+def init():  # 자동으로 SSH 포트를 등록한다. 이게 옳은 건지 판단해보아야.
+    # restore
+    core.restore()
+
+    # SSH
+    channel = socket.gethostname().lower().replace('.', '-')
+    add_server_if_not_registered(channel + '-ssh', 22)
+    core.save()
+
+
+init()
 
 
 # constants
@@ -46,7 +63,9 @@ def process_line(l):
         channel = args[1]
         addr = args[2]
         port = int(args[3])
-        return core.server(channel, (addr, port))
+        ret = core.server(channel, (addr, port))
+        core.save()
+        return ret
 
     elif cmd == 'client':
         channel = args[1]
@@ -55,11 +74,15 @@ def process_line(l):
         except IndexError:
             port = None
 
-        return core.client(channel, port)
+        ret = core.client(channel, port)
+        core.save()
+        return ret
 
     elif cmd == 'kill':
         id = int(args[1])
-        return core.kill(id)
+        ret = core.kill(id)
+        core.save()
+        return ret
 
     assert False
 
