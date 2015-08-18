@@ -112,6 +112,25 @@ def killall():
 
 # persistency
 
+def status_file_path():
+    if os.path.isabs(conf.DATA_DIR):
+        res = conf.DATA_DIR
+
+    elif conf.DATA_DIR.startswith('~'):
+        res = os.path.expanduser(conf.DATA_DIR)
+
+    else:
+        res = os.path.dirname(os.path.realpath(__file__))
+        res = os.path.join(res, "..")
+        res = os.path.join(res, conf.DATA_DIR)
+
+    if not os.path.exists(res):
+        os.makedirs(res)
+
+    res = os.path.join(res, 'status')
+    return res
+
+
 def restore():
     global proxies
     global next_id
@@ -119,10 +138,8 @@ def restore():
     assert len(proxies) == 0
     assert next_id == 1
 
-    path = os.path.join(conf.DATA_DIR, 'status')
-
     try:
-        f = open(path, 'r')
+        f = open(status_file_path(), 'r')
         items = json.load(f)
         for item in items:
             if item['kind'] == 'server':
@@ -147,8 +164,7 @@ def restore():
 def save():
     try:
         ret = status()
-        path = os.path.join(conf.DATA_DIR, 'status')
-        f = open(path, 'w')
+        f = open(status_file_path(), 'w')
         f.write(ret)
         f.close()
 
