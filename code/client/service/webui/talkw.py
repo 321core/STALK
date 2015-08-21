@@ -41,6 +41,7 @@ def server():
     if ret:
         return json.dumps({'code': 'failure', 'message': ret})
 
+    core.save()
     return json.dumps({'code': 'success'})
 
 
@@ -57,6 +58,7 @@ def client():
     if isinstance(ret, (str, unicode)):
         return json.dumps({'code': 'failure', 'message': ret})
 
+    core.save()
     return json.dumps({'code': 'success', 'port': ret})
 
 
@@ -67,6 +69,7 @@ def kill():
     if ret:
         return json.dumps({'code': 'failure', 'message': ret})
 
+    core.save()
     return json.dumps({'code': 'success'})
 
 
