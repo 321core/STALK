@@ -21,11 +21,11 @@ import webui
 
 def add_server_if_not_registered(channel, port):
     for entry in json.loads(core.status()):
-        if (entry['kind'], entry['target'][0], entry['target'][1]) == ('server', 'localhost', port):
+        if entry['kind'] == 'server' and (entry['target'][0], entry['target'][1]) == ('localhost', port):
             return
 
     core.server(channel, ('localhost', port))
-
+    
 
 def init():  # 자동으로 SSH 포트를 등록한다. 이게 옳은 건지 판단해보아야.
     # restore
