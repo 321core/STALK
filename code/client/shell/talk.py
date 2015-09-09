@@ -187,5 +187,6 @@ elif cmd == 'kill':
 
 else: # TODO: print usage (help)
     print ' Please use " stalk -help "'
+    #kang: help message 출력하는 곳은 어디에?
     pass
 
