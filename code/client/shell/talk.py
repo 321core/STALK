@@ -186,5 +186,6 @@ elif cmd == 'kill':
     kill(id)
 
 else: # TODO: print usage (help)
+    print ' Please use " stalk -help "'
     pass
 
