@@ -5,6 +5,6 @@ from api import urls as api_urls
 admin.autodiscover()
 
 urlpatterns = [
-    url('^admin/', include(admin.site.urls)),
-    url('^api/', include(api_urls))
+    url('^stalk/master/admin/', include(admin.site.urls)),
+    url('^stalk/master/api/', include(api_urls))
 ]

@@ -403,7 +403,7 @@ class Server(Resource):
             self.__apiclient.start()
 
         cpu_rate = psutil.cpu_percent() / 100.0
-        memory_rate = psutil.phymem_usage().percent / 100.0
+        memory_rate = psutil.virtual_memory().percent / 100.0
         self.__apiclient.report_status(True, len(self.__channels), cpu_rate, memory_rate)
 
 
