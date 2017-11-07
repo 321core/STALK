@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="1fe2dea1-9447-4a5d-9777-f4595c296977" name="stalk.321core.com" url="http://stalk.321core.com">
+        <fileTransfer host="stalk.321core.com" port="22" privateKey="C:\Users\ninim\keys\s-alarm.pem" rootFolder="/home/ubuntu" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

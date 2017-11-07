@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # apiclient.py
 
-import time
 import threading
+import time
 import urllib
 import urllib2
 

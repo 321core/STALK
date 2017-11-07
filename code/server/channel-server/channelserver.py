@@ -2,23 +2,26 @@
 # -*- coding: utf-8 -*-
 # channelserver.py
 
-
-import socket
-import time
-import struct
-import json
 import base64
+import json
+import os
+import socket
+import struct
+import sys
+import time
 
-from twisted.web import server
-from twisted.web.server import Site
-from twisted.web.resource import Resource, NoResource
-from twisted.internet import task
-from twisted.application import internet, service
-from twisted.python import log
 import psutil
+from twisted.application import internet, service
+from twisted.internet import task
+from twisted.python import log
+from twisted.web import server
+from twisted.web.resource import Resource, NoResource
+from twisted.web.server import Site
 
-import conf
+sys.path += [os.getcwd()]  # twistd 에서 현재 디렉토리를 읽지 못함.
+
 import apiclient
+import conf
 
 
 class RequestExtraInfo(object):
