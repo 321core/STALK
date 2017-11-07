@@ -2,8 +2,8 @@
 # admin.py
 
 from django.contrib import admin
-import models
 
+import models
 
 admin.autodiscover()
 

@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 # views.py
 
-import json
-import time
 import datetime
-import uuid
+import json
 import random
+import time
 import traceback
+import uuid
 
 import requests
-from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.utils import timezone
 
-import models
 import error
+import models
 
 
 def get_available_channel_server():

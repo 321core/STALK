@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="64e8b651-0abb-4981-a298-5393a8ca5467" name="s-alarm.321core.com" url="http://s-alarm.321core.com">
+        <fileTransfer host="s-alarm.321core.com" port="22" privateKey="C:\Users\ninim\keys\s-alarm.pem" rootFolder="/home/ubuntu" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
