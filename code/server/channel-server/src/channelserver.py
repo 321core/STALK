@@ -1,10 +1,12 @@
 import base64
 import json
 import os
+import platform
 import socket
 import struct
 import sys
 import time
+from typing import Optional, Union, Sequence
 
 import psutil
 from twisted.application import internet, service
@@ -12,9 +14,9 @@ from twisted.internet import task
 from twisted.python import log
 from twisted.web import server
 from twisted.web.resource import Resource, NoResource
-from twisted.web.server import Site
+from twisted.web.server import Site, Request
 
-sys.path += [os.getcwd()]  # twistd 에서 현재 디렉토리를 읽지 못함.
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 import apiclient
 import conf
@@ -22,38 +24,37 @@ import conf
 
 class RequestExtraInfo(object):
     def __init__(self):
-        super(RequestExtraInfo, self).__init__()
-        self.__action = None
-        self.__time_token = None
+        super().__init__()
+        self.__action: Optional[str] = None
+        self.__time_token: Union[None, float, int] = None
 
     @property
-    def action(self):
+    def action(self) -> str:
         return self.__action
 
     @action.setter
-    def action(self, value):
+    def action(self, value: str):
         assert isinstance(value, str)
         assert value
         self.__action = value
 
     @property
-    def time_token(self):
+    def time_token(self) -> Union[None, float, int]:
         return self.__time_token
 
     @time_token.setter
-    def time_token(self, value):
-        assert isinstance(value, (float, int, long))
+    def time_token(self, value: Union[float, int]):
+        assert isinstance(value, (float, int))
         self.__time_token = value
 
 
 class Channel(Resource):
     isLeaf = True
 
-    def __init__(self, channel_name):
-        assert isinstance(channel_name, str)
-        assert channel_name
+    def __init__(self, channel_name: str):
+        super().__init__()
 
-        Resource.__init__(self)
+        assert isinstance(channel_name, str)
 
         self.name = channel_name
         self.__last_time_token = None
@@ -68,7 +69,7 @@ class Channel(Resource):
         return self.__last_access_time
 
     @staticmethod
-    def create_response_as_octetstream(success, time_token=None, messages=None):
+    def create_response_as_octetstream(success: bool, time_token: Optional[float] = None, messages: Optional[Sequence] = None) -> bytes:
         assert isinstance(success, bool)
         assert time_token is None or isinstance(time_token, float)
         assert messages is None or isinstance(messages, (tuple, list))
@@ -82,7 +83,7 @@ class Channel(Resource):
             else:
                 res = struct.pack('>BdI', 1, time_token, len(messages))
                 for tt, data in messages:
-                    assert isinstance(data, str)
+                    assert isinstance(data, bytes)
                     res += struct.pack('>I', len(data)) + data
 
         else:
@@ -91,7 +92,7 @@ class Channel(Resource):
         return res
 
     @staticmethod
-    def create_response_as_json(success, time_token=None, messages=None):
+    def create_response_as_json(success: bool, time_token: Optional[float] = None, messages: Optional[Sequence] = None) -> bytes:
         assert isinstance(success, bool)
         assert time_token is None or isinstance(time_token, float)
         assert messages is None or isinstance(messages, (tuple, list))
@@ -107,13 +108,13 @@ class Channel(Resource):
         else:
             res = [False]
 
-        return json.dumps(res)
+        return json.dumps(res).encode()
 
-    def render(self, request):
+    def render(self, request: Request) -> bytes:
         request.extra_info = RequestExtraInfo()
 
         try:
-            action = request.postpath[0]
+            action: Optional[str] = request.postpath[0].decode()
         except IndexError:
             action = None
 
@@ -136,7 +137,7 @@ class Channel(Resource):
             res = NoResource(message="invalid command to channel.")
             return res.render(request)
 
-    def send(self, request):
+    def send(self, request: Request) -> bytes:
         request.responseHeaders.addRawHeader("Content-Type", "application/octet-stream")
         self.__last_access_time = time.time()
         message = request.content.read()
@@ -150,12 +151,12 @@ class Channel(Resource):
         else:
             return self.create_response_as_octetstream(False)
 
-    def recv(self, request):
+    def recv(self, request) -> bytes:
         request.responseHeaders.addRawHeader("Content-Type", "application/octet-stream")
         self.__last_access_time = time.time()
 
         try:
-            time_token = float(request.args['timetoken'][0])
+            time_token = float(request.args[b'timetoken'][0])
         except KeyError:
             time_token = 0
 
@@ -172,12 +173,12 @@ class Channel(Resource):
             self.__delayed_requests.append(request)
             return server.NOT_DONE_YET
 
-    def publish(self, request):
+    def publish(self, request) -> bytes:
         request.responseHeaders.addRawHeader("Content-Type", "application/json")
         self.__last_access_time = time.time()
 
         try:
-            messages = request.args['message']
+            messages = request.args[b'message']
         except KeyError:
             messages = None
 
@@ -193,12 +194,12 @@ class Channel(Resource):
         else:
             return self.create_response_as_json(False)
 
-    def subscribe(self, request):
+    def subscribe(self, request) -> bytes:
         request.responseHeaders.addRawHeader("Content-Type", "application/json")
         self.__last_access_time = time.time()
 
         try:
-            time_token = float(request.args['timetoken'][0])
+            time_token = float(request.args[b'timetoken'][0])
         except KeyError:
             time_token = 0
 
@@ -263,7 +264,7 @@ class Channel(Resource):
         for entry in tmp:
             self.__messages.remove(entry)
 
-    def update_last_time_token(self):
+    def update_last_time_token(self) -> float:
         res = float(str(time.time() * 1000))
         if self.__last_time_token is not None:
             if res <= self.__last_time_token:
@@ -272,7 +273,7 @@ class Channel(Resource):
         self.__last_time_token = res
         return res
 
-    def try_convert_message_to_binary_format(self, message):
+    def try_convert_message_to_binary_format(self, message: str):
         isinstance(message, str)
         try:
             obj = json.loads(message)
@@ -289,7 +290,7 @@ class Channel(Resource):
             log.msg(exc=True)
             return message
 
-    def try_restore_message_from_binary_format(self, message):
+    def try_restore_message_from_binary_format(self, message: str):
         isinstance(message, str)
         try:
             if message[0] == '(' and message[-1] == ')':
@@ -311,26 +312,30 @@ class Channel(Resource):
 class Status(Resource):
     isLeaf = True
 
-    def __init__(self, server_):
-        Resource.__init__(self)
+    def __init__(self, server_: 'Server'):
+        super().__init__()
         self.__server = server_
 
-    def render(self, request):
+    def render(self, request: Request) -> bytes:
         try:
-            action = request.postpath[0]
+            action: bytes = request.postpath[0]
+            action: Optional[str] = action.decode()
+
         except IndexError:
             action = None
 
         if action == 'channels':
-            return self.channels(request)
+            return self.channels(request).encode()
 
         else:
             res = NoResource(message="invalid command to server.")
             return res.render(request)
 
-    def channels(self, request):
+    def channels(self, request: Request) -> str:
         try:
-            prefix = request.args['prefix'][0]
+            prefix: bytes = request.args[b'prefix'][0]
+            prefix: Optional[str] = prefix.decode()
+
         except KeyError:
             prefix = None
 
@@ -349,7 +354,7 @@ class Server(Resource):
     isLeaf = False
 
     def __init__(self):
-        Resource.__init__(self)
+        super().__init__()
 
         self.__channels = {}
         self.__apiclient = apiclient.APIClient()
@@ -358,16 +363,24 @@ class Server(Resource):
         task.LoopingCall(self.collect_garbages).start(60.0, False)
         task.LoopingCall(self.report_to_index_server).start(3.0, False)
 
-    def getChild(self, name, request):
+    def getChild(self, name: bytes, request: Request) -> Resource:
         #
-        sock = request.transport.socket
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
-        sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 1)
-        sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 3)
-        sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
+        sock: socket.socket = request.transport.socket
+
+        if platform.system() == 'Darwin':
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+            TCP_KEEPALIVE = 0x10
+            sock.setsockopt(socket.IPPROTO_TCP, TCP_KEEPALIVE, 1)
+
+        else:
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 1)
+            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 3)
+            sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
 
         #
         if name:
+            name: str = name.decode()
             if name == '__status':
                 return self.__status
 
@@ -380,7 +393,7 @@ class Server(Resource):
 
         return NoResource(message='invalid operation')
 
-    def collect_garbages(self):
+    def collect_garbages(self) -> None:
         cur_time = time.time()
         tmp = []
         for channel in self.__channels.values():
@@ -391,13 +404,13 @@ class Server(Resource):
         for channelName in tmp:
             del self.__channels[channelName]
 
-    def get_channels(self):
-        return self.__channels.values()
+    def get_channels(self) -> Sequence[Channel]:
+        return tuple(self.__channels.values())
 
-    def get_channel_names(self):
-        return self.__channels.keys()
+    def get_channel_names(self) -> Sequence[str]:
+        return tuple(self.__channels.keys())
 
-    def report_to_index_server(self):
+    def report_to_index_server(self) -> None:
         if not self.__apiclient.is_running:  # i don't know why, but  call 'start' here (not __init__)
             self.__apiclient.start()
 
@@ -408,9 +421,8 @@ class Server(Resource):
 
 class MySite(Site):
     def __init__(self):
-        Site.__init__(self, Server(), timeout=60)
+        super().__init__(Server(), timeout=60)
 
 
-# twistd -y ./channelserver.py
 application = service.Application('web')
 internet.TCPServer(conf.PORT, MySite()).setServiceParent(service.IServiceCollection(application))

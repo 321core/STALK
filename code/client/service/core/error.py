@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-# error.py
-
-
 class APIError(Exception):
     pass
 

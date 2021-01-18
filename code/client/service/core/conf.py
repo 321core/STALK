@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
-# conf.py
-
-import os
-
-base = os.path.dirname(os.path.abspath(__file__))
-
-exec(open(base + os.path.sep + '../conf/settings.conf', 'r').read())
+INDEX_SERVER_BASE_URL = "localhost:8000/stalk/master/api"
+USER_NAME = "keti"
+PASSWORD = "keti"
+PORT = 8989
+BROADCAST_PORT = 8988
+WEBUI_PORT = 8900
+DATA_DIR = "~/.stalk"

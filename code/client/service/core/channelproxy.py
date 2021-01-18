@@ -1,34 +1,33 @@
-# -*- coding: utf-8 -*-
-# channelproxy.py
-
 import socket
 import threading
 import time
 import traceback
+from threading import Thread
+from typing import Optional
 
-from pubsubsocket import PubSubSocket
+from .pubsubsocket import PubSubSocket
 
 
-class ChannelProxy(object):
-    def __init__(self, sock, rx_channel, tx_channel, channel_server_address):
+class ChannelProxy:
+    def __init__(self, sock: socket.socket, rx_channel: str, tx_channel: str, channel_server_address: str):
         assert isinstance(sock, socket.socket)
-        assert isinstance(rx_channel, (str, unicode))
-        assert isinstance(tx_channel, (str, unicode))
-        assert isinstance(channel_server_address, (str, unicode))
+        assert isinstance(rx_channel, str)
+        assert isinstance(tx_channel, str)
+        assert isinstance(channel_server_address, str)
 
-        super(ChannelProxy, self).__init__()
+        super().__init__()
 
         self.__socket = sock
         self.__rx_channel = rx_channel
         self.__tx_channel = tx_channel
-        self.__pubsubsocket = PubSubSocket(channel_server_address)
+        self.__ps_socket = PubSubSocket(channel_server_address)
         self.__running = False
-        self.__socket_receiving_thread = None
-        self.__channel_receiving_thread = None
+        self.__socket_receiving_thread: Optional[Thread] = None
+        self.__channel_receiving_thread: Optional[Thread] = None
         self.__lock = threading.Lock()
         self.__subscribed = False
         self.__other_ready = False
-        self.__start_time = None
+        self.__start_time: Optional[float] = None
 
     def start(self):
         assert not self.__running
@@ -53,7 +52,7 @@ class ChannelProxy(object):
                     self.__socket.shutdown(socket.SHUT_RDWR)
                     self.__socket = None
 
-                self.__pubsubsocket.send(self.__rx_channel, 'quit')
+                self.__ps_socket.send(self.__rx_channel, 'quit')
 
             self.__socket_receiving_thread.join()
             self.__socket_receiving_thread = None
@@ -74,41 +73,42 @@ class ChannelProxy(object):
 
             with self.__lock:
                 if len(raw):
-                    self.__pubsubsocket.send(self.__tx_channel, 'send', raw)
+                    self.__ps_socket.send(self.__tx_channel, 'send', raw)
 
                 else:
-                    self.__pubsubsocket.send(self.__tx_channel, 'close')
+                    self.__ps_socket.send(self.__tx_channel, 'close')
                     if self.__socket:
                         self.__socket.close()
                         self.__socket = None
 
                     self.__running = False
-                    self.__pubsubsocket.send(self.__rx_channel, 'quit')
+                    self.__ps_socket.send(self.__rx_channel, 'quit')
                     break
 
-        print 'socket receiver thread exits.'
+        print('socket receiver thread exits.')
 
     def _channel_receiver_thread_main(self):
         def callback(command, payload):
             if command is None and payload is None:
-                print 'im subscribed channel.'
+                print('im subscribed channel.')
                 if not self.__subscribed:
                     self.__subscribed = True
-                    self.__pubsubsocket.send(self.__tx_channel, 'imready')
-                    print ' and send message.'
+                    self.__ps_socket.send(self.__tx_channel, 'imready')
+                    print(' and send message.')
 
                 return True
 
             else:
+                assert isinstance(command, bytes)
                 with self.__lock:
-                    if command == 'send':
+                    if command == b'send':
                         if self.__socket:
                             self.__socket.sendall(payload)
 
                         return True
 
-                    elif command == 'close':
-                        print 'close socket...'
+                    elif command == b'close':
+                        print('close socket...')
                         if self.__socket:
                             self.__socket.shutdown(socket.SHUT_RDWR)
                             self.__socket = None
@@ -116,28 +116,28 @@ class ChannelProxy(object):
                         self.__running = False
                         return False
 
-                    elif command == 'quit':
+                    elif command == b'quit':
                         return False
 
-                    elif command == 'imready':
+                    elif command == b'imready':
                         if not self.__other_ready:
-                            print 'other side has subscirbed channel.'
+                            print('other side has subscirbed channel.')
                             self.__other_ready = True
 
                             # send again
                             if self.__subscribed:
-                                self.__pubsubsocket.send(self.__tx_channel, 'imready')
-                                print ' send imready message again.'
+                                self.__ps_socket.send(self.__tx_channel, 'imready')
+                                print(' send imready message again.')
 
                     return True
 
-        self.__pubsubsocket.recv(self.__rx_channel, callback)
-        print 'channel receiver thread exits.'
+        self.__ps_socket.recv(self.__rx_channel, callback)
+        print('channel receiver thread exits.')
 
     @property
     def running(self):
         return self.__running
 
     @property
-    def handshaked(self):
+    def has_hand_shake_done(self):
         return self.__subscribed and self.__other_ready

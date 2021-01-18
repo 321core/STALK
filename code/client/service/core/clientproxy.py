@@ -1,39 +1,38 @@
-# -*- coding: utf-8 -*-
-# clientproxy.py
-
-import socket
 import json
+import socket
 import threading
 import time
 import traceback
+from threading import Thread
+from typing import Tuple, Optional
 
-import conf
-from pubsubsocket import PubSubSocket
-from channelproxy import ChannelProxy
-import apiclient
+from . import apiclient
+from . import conf
+from .channelproxy import ChannelProxy
+from .pubsubsocket import PubSubSocket
 
 
 class ClientProxy(object):
-    def __init__(self, id, sensor_name, server_address):
-        assert isinstance(id, int)
+    def __init__(self, proxy_id: int, sensor_name: str, server_address: Tuple[str, int]):
+        assert isinstance(proxy_id, int)
         assert isinstance(server_address, (tuple, list))
         assert len(server_address) == 2
         assert isinstance(server_address[0], str)
         assert isinstance(server_address[1], int)
         assert isinstance(sensor_name, str)
 
-        super(ClientProxy, self).__init__()
+        super().__init__()
 
-        self.__id = id
-        self.__server_address = tuple(server_address)
-        self.__receive_thread = None
+        self.__id = proxy_id
+        self.__server_address: Tuple[str, int] = tuple(server_address)
+        self.__receive_thread: Optional[Thread] = None
         self.__sensor_name = sensor_name
         self.__running = False
         self.__channel_proxies = []
         self.__lock = threading.Lock()
-        self.__thread = None
-        self.__pubsubsocket = None
-        self.__main_thread = None
+        self.__thread: Optional[Thread] = None
+        self.__ps_socket: Optional[PubSubSocket] = None
+        self.__main_thread: Optional[Thread] = None
 
     @property
     def id(self):
@@ -77,11 +76,10 @@ class ClientProxy(object):
                     self.__thread = threading.Thread(target=self.recv_thread, args=(channel_server_address, channel))
                     self.__thread.start()
 
-                    # check channel continously
+                    # check channel continuously
                     while self.__running:
                         try:
-                            ret = apiclient.check_listen_channel(conf.USER_NAME, conf.PASSWORD,
-                                                                 self.__sensor_name, channel)
+                            ret = apiclient.check_listen_channel(conf.USER_NAME, conf.PASSWORD, self.__sensor_name, channel)
 
                         except Exception:
                             traceback.print_exc()
@@ -95,10 +93,10 @@ class ClientProxy(object):
 
                         else:
                             with self.__lock:
-                                self.__pubsubsocket.request_stop_receiving()
-                                self.__pubsubsocket.send(channel, 'quit')
+                                self.__ps_socket.request_stop_receiving()
+                                self.__ps_socket.send(channel, 'quit')
                                 self.__thread.join()
-                                self.__pubsubsocket = None
+                                self.__ps_socket = None
                                 self.__thread = None
 
                             break
@@ -111,14 +109,14 @@ class ClientProxy(object):
 
         finally:
             with self.__lock:
-                if self.__pubsubsocket and self.__thread:
-                    self.__pubsubsocket.request_stop_receiving()
-                    self.__pubsubsocket.send(channel, 'quit')
+                if self.__ps_socket and self.__thread:
+                    self.__ps_socket.request_stop_receiving()
+                    self.__ps_socket.send(channel, 'quit')
                     self.__thread.join()
-                    self.__pubsubsocket = None
+                    self.__ps_socket = None
                     self.__thread = None
 
-            print 'stopping channel proxies...'
+            print('stopping channel proxies...')
             with self.__lock:
                 for p in self.__channel_proxies:
                     if p.running:
@@ -126,11 +124,11 @@ class ClientProxy(object):
 
                 self.__channel_proxies = []
 
-            print 'run_loop terminates.'
+            print('run_loop terminates.')
 
     def recv_thread(self, channel_server_address, channel):
-        def channel_message_received(command, payload):
-            if command == 'connect':
+        def channel_message_received(command: bytes, payload: bytes):
+            if command == b'connect':
                 message = json.loads(payload)
                 tx_channel = message['tx_channel']
                 rx_channel = message['rx_channel']
@@ -145,12 +143,12 @@ class ClientProxy(object):
                 with self.__lock:
                     self.__channel_proxies.append(proxy)
 
-            elif command == 'quit':
+            elif command == b'quit':
                 return False
 
             return self.__running
 
-        self.__pubsubsocket = PubSubSocket(channel_server_address)
-        self.__pubsubsocket.recv(channel, channel_message_received)
+        self.__ps_socket = PubSubSocket(channel_server_address)
+        self.__ps_socket.recv(channel, channel_message_received)
 
-        print 'recv_thread terminates.'
+        print('recv_thread terminates.')

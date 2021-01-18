@@ -2,24 +2,74 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4b641438-2702-47d8-899e-3ae358986f43" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.editorconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/apiclient.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/channelserver.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/conf.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/stalk-channel-server.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/service.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/shell.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/Pipfile.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pipfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pipfile.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run-local.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../index-server/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../index-server/.idea/sshConfigs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/conf/settings.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/apiclient.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/apiclient.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/channelproxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/channelproxy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/clientproxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/clientproxy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/error.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/error.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/pubsubsocket.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/pubsubsocket.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/serverproxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/serverproxy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/talkd.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/talkd.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/webshell.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/cell.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/cells.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/delete.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/enter.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/head.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/heads.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/shift.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/webshell.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/webshell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/webshell.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webui/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/webui/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webui/talkw.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/webui/talkw.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/shell/talk.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/shell/talk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/.editorconfig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/channel-server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/channel-server.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/apiclient.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/channelserver.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/settings.conf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deploy.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/stalk-channel-server.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/apiclient.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/apiclient.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/channelserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/channelserver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/.idea/stalk-index-server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/.idea/stalk-index-server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/.idea/webServers.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/api/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/api/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/api/error.py" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/api/error.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/api/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/api/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/stalk_index_server/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/stalk_index_server/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../index-server/stalk_index_server/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/../index-server/stalk_index_server/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,6 +155,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="credentialsType com.jetbrains.python.remote.PyCreateRemoteInterpreterDialog$PyCreateRemoteSdkForm" value="Docker" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -113,28 +164,54 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path" value="node" />
-    <property name="settings.editor.selected.configurable" value="web.server" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunManager">
-    <configuration name="Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
-      <deployment type="dockerfile">
-        <settings>
-          <option name="imageTag" value="" />
-          <option name="buildCliOptions" value="" />
-          <option name="command" value="" />
-          <option name="containerName" value="stalk-channel-server" />
-          <option name="entrypoint" value="" />
-          <option name="commandLineOptions" value="" />
-          <option name="sourceFilePath" value="Dockerfile" />
-        </settings>
-      </deployment>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="channel-server" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/.local/share/virtualenvs/channel-server-9c-hpHPD/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/.local/share/virtualenvs/channel-server-9c-hpHPD/bin/twistd" />
+      <option name="PARAMETERS" value="--nodaemon -y src/channelserver.py" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Docker.Dockerfile" />
-      </list>
-    </recent_temporary>
+    <configuration name="twistd" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="channel-server" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/.local/share/virtualenvs/channel-server-9c-hpHPD/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/.local/share/virtualenvs/channel-server-9c-hpHPD/bin/twistd" />
+      <option name="PARAMETERS" value="--nodaemon -y src/channelserver.py" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -146,6 +223,8 @@
       <updated>1510031613068</updated>
       <workItem from="1610941620898" duration="259000" />
       <workItem from="1610942042071" duration="2862000" />
+      <workItem from="1610953003676" duration="7085000" />
+      <workItem from="1610971684476" duration="1501000" />
     </task>
     <servers />
   </component>
@@ -197,6 +276,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/channel_server$twistd.coverage" NAME="twistd Coverage Results" MODIFIED="1610975134274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/channelserver.py">

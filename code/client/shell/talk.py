@@ -1,12 +1,7 @@
-#! /usr/bin/python
-# -*- coding: utf-8 -*-
-# talk.py
-
-import optparse
 import json
-from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_KEEPALIVE, IPPROTO_TCP, \
-                   TCP_KEEPINTVL, TCP_KEEPCNT
+import optparse
 import socket
+from socket import AF_INET, SOCK_STREAM, SOL_SOCKET, SO_KEEPALIVE, IPPROTO_TCP, TCP_KEEPINTVL, TCP_KEEPCNT
 
 DEFAULT_SERVICE_PORT = 8989
 service_port = DEFAULT_SERVICE_PORT
@@ -28,9 +23,9 @@ def request(line):
 
     try:
         s.connect(('localhost', service_port))
-        s.sendall(line + '\n')
-        buf = ''
-        while not buf or buf[-1] != '\0':
+        s.sendall((line + '\n').encode())
+        buf = b''
+        while not buf or buf[-1] != 0:
             ret = s.recv(4096)
             if not ret:
                 raise RequestError('stalk service error.')
@@ -52,15 +47,16 @@ def status():
     try:
         items = request('status')
 
-    except RequestError, e:
-        print e.message
+    except RequestError as e:
+        print(e.message)
         return
 
     assert isinstance(items, list)
 
     if items:
-        print 'id\ttype\tchannel\tdescription'
-        print '-' * 80
+        print('id\ttype\tchannel\tdescription')
+        print('-' * 80)
+
         for item in items:
             assert isinstance(item, dict)
             assert 'kind' in item
@@ -79,15 +75,15 @@ def status():
                 assert isinstance(item['port'], int)
                 txt = '%d' % item['port']
 
-            print '%d\t%s\t%s\t%s' % (item['id'], item['kind'], item['channel'], txt)
+            print('%d\t%s\t%s\t%s' % (item['id'], item['kind'], item['channel'], txt))
     else:
-        print 'No any entries.'
+        print('No any entries.')
 
 
 def server(channel, target):
     assert isinstance(channel, str)
     assert isinstance(target, tuple)
-    assert len(target)==2
+    assert len(target) == 2
     assert isinstance(target[0], str)
     assert isinstance(target[1], int)
 
@@ -98,12 +94,12 @@ def server(channel, target):
         ret = request(line)
         assert isinstance(ret, str)
 
-    except RequestError, e:
-        print e.message
+    except RequestError as e:
+        print(e.message)
         return
 
     if ret:
-        print ret
+        print(ret)
 
 
 def client(channel, port):
@@ -119,8 +115,8 @@ def client(channel, port):
     try:
         ret = request(line)
 
-    except RequestError, e:
-        print e.message
+    except RequestError as e:
+        print(e.message)
         return
 
     return ret
@@ -135,58 +131,62 @@ def kill(id):
         ret = request(line)
         assert isinstance(ret, str)
 
-    except RequestError, e:
-        print e.message
+    except RequestError as e:
+        print(e.message)
         return
 
     if ret:
-        print ret
+        print(ret)
 
 
-# parse options
-parser = optparse.OptionParser()
-parser.add_option('--service-port', dest='service_port', type=int, default=DEFAULT_SERVICE_PORT)
-options, args = parser.parse_args()
+def main():
+    # parse options
+    parser = optparse.OptionParser()
+    parser.add_option('--service-port', dest='service_port', type=int, default=DEFAULT_SERVICE_PORT)
+    options, args = parser.parse_args()
 
-service_port = options.service_port
+    service_port = options.service_port
 
-# process command
-if args:
-    cmd = args[0]
-else:
-    cmd = None
+    # process command
+    if args:
+        cmd = args[0]
+    else:
+        cmd = None
 
-if cmd == 'status':
-    status()
+    if cmd == 'status':
+        status()
 
-elif cmd == 'server':
-    channel = args[1]
-    addr = args[2]
-    port = int(args[3])
-    server(channel, (addr, port))
+    elif cmd == 'server':
+        channel = args[1]
+        addr = args[2]
+        port = int(args[3])
+        server(channel, (addr, port))
 
-elif cmd == 'client':
-    channel = args[1]
+    elif cmd == 'client':
+        channel = args[1]
 
-    port = None
-    if len(args) >= 3:
-        port = int(args[2])
+        port = None
+        if len(args) >= 3:
+            port = int(args[2])
 
-    ret = client(channel, port)
+        ret = client(channel, port)
 
-    if isinstance(ret, int) and port is None:
-        print 'Local port:%d' % ret
+        if isinstance(ret, int) and port is None:
+            print('Local port:%d' % ret)
 
-    if isinstance(ret, (str, unicode)):
-        print ret
+        if isinstance(ret, str):
+            print(ret)
 
 
-elif cmd == 'kill':
-    id = int(args[1])
-    kill(id)
+    elif cmd == 'kill':
+        id = int(args[1])
+        kill(id)
 
-else: # TODO: print usage (help)
-    print ' Please use " stalk -help "'
-    #kang: help message 출력하는 곳은 어디에?
-    pass
+    else:  # TODO: print usage (help)
+        print(' Please use " stalk -help "')
+        # kang: help message 출력하는 곳은 어디에?
+        pass
 
+
+if __name__ == '__main__':
+    main()

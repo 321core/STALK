@@ -9,6 +9,6 @@ RUN pip install -r requirements.txt
 
 COPY src/ .
 
-# CMD ["python", "channelserver.py"]
-CMD ["twistd", "-y", "./channelserver.py"]
+# CMD ["python3", "channelserver.py"]
+CMD ["twistd", "--nodaemon", "-y", "./channelserver.py"]
 

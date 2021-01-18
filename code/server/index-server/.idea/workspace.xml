@@ -2,14 +2,75 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dd8966ea-fd25-4013-840a-78a25ca684db" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../channel-server/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../channel-server/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/stalk_index_server/settings.py" afterPath="$PROJECT_DIR$/stalk_index_server/settings.py" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/service.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/service/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/shell.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../client/shell/Pipfile.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../channel-server/Pipfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../channel-server/Pipfile.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../channel-server/run-local.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sshConfigs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/conf/settings.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/apiclient.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/apiclient.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/channelproxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/channelproxy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/clientproxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/clientproxy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/error.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/error.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/pubsubsocket.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/pubsubsocket.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/core/serverproxy.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/core/serverproxy.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/talkd.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/talkd.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/webshell.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/cell.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/cells.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/delete.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/enter.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/head.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/heads.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/shift.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/webshell.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/webshell.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webshell/www/webshell.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webui/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/webui/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/service/webui/talkw.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/service/webui/talkw.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../client/shell/talk.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../client/shell/talk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../channel-server/.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../channel-server/.idea/channel-server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/.idea/channel-server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../channel-server/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../channel-server/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../channel-server/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../channel-server/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../channel-server/src/apiclient.py" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/src/apiclient.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../channel-server/src/channelserver.py" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/src/channelserver.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../channel-server/src/conf.py" beforeDir="false" afterPath="$PROJECT_DIR$/../channel-server/src/conf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/stalk-index-server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/stalk-index-server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/error.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/error.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/api/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/manage.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stalk_index_server/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/stalk_index_server/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stalk_index_server/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/stalk_index_server/urls.py" afterDir="false" />
     </list>
-    <ignored path="stalk-index-server.iws" />
-    <ignored path=".idea/workspace.xml" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,40 +81,6 @@
   </component>
   <component name="FavoritesManager">
     <favorites_list name="stalk-index-server" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2484">
-              <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/stalk_index_server/settings.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="70" column="13" lean-forward="true" selection-start-line="70" selection-start-column="13" selection-end-line="70" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/api/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -84,6 +111,7 @@
     <option name="width" value="2560" />
     <option name="height" value="1418" />
   </component>
+  <component name="ProjectId" id="1nEyg4wa0NQf4RNzMquwVLvegle" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -130,34 +158,32 @@
       <pane id="Scratches" />
     </panes>
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
-    <property name="options.lastSelected" value="Errors" />
-    <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="options.searchVisible" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../demo_gui/code/server/webservice" />
     <property name="FullScreen" value="false" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../demo_gui/code/server/webservice" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="options.lastSelected" value="Errors" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings sdk-home="/Library/Frameworks/Python.framework/Versions/2.7/bin/python2.7">
         <option name="mySdkHome" value="/Library/Frameworks/Python.framework/Versions/2.7/bin/python2.7" />
-        <option name="myAddSourceRoots" value="true" />
       </console-settings>
-    </option>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
     </option>
   </component>
   <component name="RunManager">
@@ -170,108 +196,6 @@
       <option name="PARAMETERS" value="" />
       <module name="" />
       <envs />
-    </configuration>
-    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stalk-index-server" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="PARAMETERS" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="py.test">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stalk-index-server" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="testToRun" value="" />
-      <option name="keywords" value="" />
-      <option name="params" value="" />
-      <option name="USE_PARAM" value="false" />
-      <option name="USE_KEYWORD" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Nosetests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stalk-index-server" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Unittests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stalk-index-server" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <option name="PUREUNITTEST" value="true" />
-      <option name="PARAMS" value="" />
-      <option name="USE_PARAM" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="tests" factoryName="Doctests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="stalk-index-server" />
-      <option name="SCRIPT_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -292,10 +216,32 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
+    <configuration name="DEV SERVER" type="Python.DjangoServer" factoryName="Django server">
+      <module name="stalk-index-server" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="stalk_index_server.settings" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/.local/share/virtualenvs/index-server-Iq7DSSXo/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
   </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false" />
-  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration>$USER_HOME$/.subversion</configuration>
   </component>
@@ -306,6 +252,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1428808526726</updated>
+      <workItem from="1610969655182" duration="2501000" />
     </task>
     <servers />
   </component>
@@ -337,10 +284,21 @@
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.conf" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -349,13 +307,6 @@
     <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
       <collection />
     </option>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager />
-    <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/api/admin.py">

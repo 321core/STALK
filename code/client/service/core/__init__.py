@@ -1,14 +1,12 @@
-# -*- coding: utf-8 -*-
-# core/__init__.py
-
-import os
 import json
+import os
 import socket
+from typing import Optional, Tuple
 
-import conf
-from clientproxy import ClientProxy
-from serverproxy import ServerProxy
-import apiclient
+from . import apiclient
+from . import conf
+from .clientproxy import ClientProxy
+from .serverproxy import ServerProxy
 
 # proxies
 proxies = []
@@ -51,7 +49,7 @@ def status():
     return json.dumps(res)
 
 
-def server(channel, target):
+def server(channel: str, target: Tuple[str, int]):
     global next_id
 
     assert isinstance(channel, str)
@@ -67,10 +65,9 @@ def server(channel, target):
     return ''
 
 
-def client(channel, port=None):
+def client(channel: str, port: Optional[int] = None):
     global next_id
 
-    assert isinstance(channel, str)
     assert port is None or isinstance(port, int)
 
     try:
@@ -88,7 +85,7 @@ def client(channel, port=None):
     return '%d' % p.port
 
 
-def kill(id_):
+def kill(id_: int):
     p = proxy_by_id(id_)
     if p:
         apiclient.kill(conf.USER_NAME, conf.PASSWORD, p.sensor_name)
@@ -168,5 +165,5 @@ def save():
         f.write(ret)
         f.close()
 
-    except IOError, e:
-        print e.message
+    except IOError as e:
+        print(e.message)

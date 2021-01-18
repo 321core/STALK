@@ -1,6 +1,5 @@
 import threading
 import time
-import urllib
 
 import requests
 from twisted.internet.defer import setDebugging
@@ -62,7 +61,7 @@ class APIClient(object):
                     try:
                         resp = requests.get(url, param, timeout=TIMEOUT)
 
-                    except requests.RequestsException:
+                    except requests.exceptions.RequestException:
                         log.msg(exc=True)
 
             else:

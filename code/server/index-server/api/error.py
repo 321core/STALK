@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# error.py
-
 CODE_OK = 'CODE_OK'
 CODE_ERROR = 'CODE_ERROR'
 CODE_NO_USER = 'CODE_NO_USER'

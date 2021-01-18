@@ -1,1 +1,1 @@
-from talkw import run
+from .talkw import run

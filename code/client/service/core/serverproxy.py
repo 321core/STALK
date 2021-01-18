@@ -1,26 +1,24 @@
-# -*- coding: utf-8 -*-
-# serverproxy.py
-
-import socket
-import uuid
 import json
-import traceback
-import time
+import socket
 import threading
+import time
+import traceback
+import uuid
+from typing import Optional
 
-import conf
-from channelproxy import ChannelProxy
-from pubsubsocket import PubSubSocket
-import apiclient
+from . import apiclient
+from . import conf
+from .channelproxy import ChannelProxy
+from .pubsubsocket import PubSubSocket
 
 
-class ServerProxy(object):
-    def __init__(self, id, sensor_name, port=None):
+class ServerProxy:
+    def __init__(self, id: int, sensor_name: str, port: Optional[int] = None):
         assert isinstance(id, int)
         assert port is None or isinstance(port, int)
         assert isinstance(sensor_name, str)
 
-        super(ServerProxy, self).__init__()
+        super().__init__()
 
         self.__id = id
         self.__sensor_name = sensor_name
@@ -94,7 +92,8 @@ class ServerProxy(object):
                     s.close()
 
         finally:
-            print 'stopping channel proxies...'
+            print
+            'stopping channel proxies...'
             for p in self.__proxies:
                 if p.running:
                     p.stop()

@@ -1,17 +1,14 @@
-#! /usr/bin/python
-# -*- coding: utf-8 -*-
-# talkw.py
-
+import json
 import os
+import socket
 import sys
+
+from flask import Flask, render_template, request
+
 if __name__ == '__main__':
     sys.path += [os.getcwd() + os.path.sep + '..']
 
-import json
-import socket
-
 import core
-from flask import Flask, render_template, request, redirect
 
 PORT = core.conf.WEBUI_PORT
 app = Flask(__name__)
@@ -19,7 +16,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html', hostname=socket.gethostname(),
+    return render_template('index.html',
+                           hostname=socket.gethostname(),
                            server_address=core.conf.INDEX_SERVER_BASE_URL,
                            id=core.conf.USER_NAME, password=core.conf.PASSWORD,
                            broadcast_port=core.conf.BROADCAST_PORT,
@@ -55,7 +53,7 @@ def client():
         port = None
 
     ret = json.loads(core.client(channel, port))
-    if isinstance(ret, (str, unicode)):
+    if isinstance(ret, str):
         return json.dumps({'code': 'failure', 'message': ret})
 
     core.save()

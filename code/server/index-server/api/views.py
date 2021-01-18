@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# views.py
-
 import datetime
 import json
 import random
@@ -13,8 +10,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.utils import timezone
 
-import error
-import models
+from . import error
+from . import models
 
 
 def get_available_channel_server():
@@ -45,9 +42,9 @@ def listen(req, user_name, sensor_name):
         }
         return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type='application/json')
 
-    channelserver = get_available_channel_server()
+    channel_server = get_available_channel_server()
 
-    if channelserver:
+    if channel_server:
         entry, _ = models.Entry.objects.get_or_create(user=user, sensor_name=sensor_name)
         entry.channel = 'l-' + str(uuid.uuid4())
         entry.channel_server = get_available_channel_server()
@@ -108,15 +105,15 @@ def connect(req, user_name, sensor_name):
         }
         return HttpResponse(json.dumps(res, sort_keys=True, indent=4), content_type="application/json")
 
-    channelserver = get_available_channel_server()
+    channel_server = get_available_channel_server()
 
-    if channelserver:
+    if channel_server:
         res = {
             'code': error.CODE_OK,
             'result': {
                 'channel': entry.channel,
                 'channel-server-address': entry.channel_server.base_url,
-                'transfer-channel-server-address': channelserver.base_url
+                'transfer-channel-server-address': channel_server.base_url
             }
         }
 
@@ -147,8 +144,7 @@ def report_channel_server_status(req, server_name):
     server.num_channels = num_channels if num_channels is not None else server.num_channels
     server.cpu_rate = cpu_rate if cpu_rate is not None else server.cpu_rate
     server.memory_rate = memory_rate if memory_rate is not None else server.memory_rate
-    server.last_reporting_time = datetime.datetime.fromtimestamp(timestamp).replace(
-        tzinfo=timezone.get_current_timezone())
+    server.last_reporting_time = datetime.datetime.fromtimestamp(timestamp).replace(tzinfo=timezone.get_current_timezone())
     server.save()
 
     res = {
@@ -183,7 +179,7 @@ def sweep_garbages(req):
                             if entry.channel not in channel_names:
                                 garbages.append(entry)
 
-                except Exception:
+                except requests.exceptions.RequestException:
                     traceback.print_exc()
 
             for entry in garbages:

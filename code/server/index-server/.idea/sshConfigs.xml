@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="s-alarm.321core.com" id="c1abe995-75f7-49ab-b95b-fd36f4c871ca" keyPath="C:\Users\ninim\keys\s-alarm.pem" port="22" customName="s-alarm.321core.com" nameFormat="CUSTOM">
+        <option name="customName" value="s-alarm.321core.com" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

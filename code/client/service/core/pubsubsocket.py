@@ -1,17 +1,17 @@
-# -*- coding: utf-8 -*-
-# pubsubsocket.py
-
-import time
 import socket
 import struct
+import time
 import traceback
+from typing import Optional
+
 import requests
 
 
-class PubSubSocket(object):
+class PubSubSocket:
     def __init__(self, channel_server_address):
-        assert isinstance(channel_server_address, (str, unicode))
-        super(PubSubSocket, self).__init__()
+        assert isinstance(channel_server_address, str)
+        super().__init__()
+
         self.__channel_server_address = channel_server_address
         self.__request_stop_receiving = False
         self.__session = requests.Session()
@@ -20,8 +20,8 @@ class PubSubSocket(object):
         self.__request_stop_receiving = True
 
     @staticmethod
-    def parse_binary_response(data):
-        assert isinstance(data, str)
+    def parse_binary_response(data: bytes):
+        assert isinstance(data, bytes)
 
         if len(data) == 0:
             return struct.unpack('>B', data)
@@ -48,15 +48,15 @@ class PubSubSocket(object):
         else:
             assert False
 
-    def send(self, channel, command, payload=None):
-        assert isinstance(channel, (str, unicode))
-        assert isinstance(command, (str, unicode))
-        assert payload is None or isinstance(payload, str)
+    def send(self, channel: str, command: str, payload: Optional[bytes] = None):
+        assert isinstance(channel, str)
+        assert isinstance(command, str)
+        assert payload is None or isinstance(payload, bytes)
 
         if payload:
-            data = '(' + command + ',' + payload + ')'
+            data = b'(' + command.encode() + b',' + payload + b')'
         else:
-            data = '(' + command + ')'
+            data = b'(' + command.encode() + b')'
 
         ret = self.do_request(channel, 'send', data=data)
         if ret:
@@ -65,8 +65,8 @@ class PubSubSocket(object):
         return [0, "Not Sent", "0"]
 
     def recv(self, channel, callback, time_token=0):
-        assert isinstance(channel, (str, unicode))
-        assert isinstance(time_token, (float, int, long))
+        assert isinstance(channel, str)
+        assert isinstance(time_token, (float, int))
 
         not_subscribed = True if time_token == 0 else False
 
@@ -90,12 +90,13 @@ class PubSubSocket(object):
                     callback(None, None)
 
                 if not len(messages):
+                    time.sleep(0.1)  # 일부러 넣음.
                     continue
 
-                for m in messages:
-                    assert m[0] == '('
-                    assert m[-1] == ')'
-                    idx = m.find(',')
+                for m in messages:  # type: bytes
+                    assert m[0] == ord('(')
+                    assert m[-1] == ord(')')
+                    idx = m.find(ord(','))
                     if idx >= 0:
                         command, payload = m[1:idx], m[idx + 1:-1]
                     else:
@@ -111,18 +112,17 @@ class PubSubSocket(object):
 
         return True
 
-    def do_request(self, channel, action, params=None, data=None):
-        assert isinstance(channel, (str, unicode))
-        assert isinstance(action, (str, unicode))
+    def do_request(self, channel: str, action: str, params: Optional[dict] = None, data: Optional[bytes] = None):
+        assert isinstance(channel, str)
+        assert isinstance(action, str)
         assert params is None or isinstance(params, dict)
-        assert data is None or isinstance(data, str)
+        assert data is None or isinstance(data, bytes)
 
         url = 'http://%s/%s/%s' % (self.__channel_server_address, channel, action)
 
         try:
             if data is not None:
-                ret = self.do_request_post(url, params=params, data=data,
-                                           headers={'Content-Type': 'application/octet-stream'}, timeout=60)
+                ret = self.do_request_post(url, params=params, data=data, headers={'Content-Type': 'application/octet-stream'}, timeout=60)
                 return ret
 
             else:
@@ -145,7 +145,7 @@ class PubSubSocket(object):
         except Exception:
             traceback.print_exc()
 
-    def do_request_post(self, url, params=None, data=None, headers={}, timeout=10):
+    def do_request_post(self, url, params: Optional[dict] = None, data: Optional[bytes] = None, headers={}, timeout=10):
         try:
             ret = self.__session.post(url, params=params, headers=headers, timeout=timeout, data=data)
             if ret.ok:
