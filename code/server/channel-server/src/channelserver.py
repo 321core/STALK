@@ -1,7 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-# channelserver.py
-
 import base64
 import json
 import os

@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-# apiclient.py
-
 import threading
 import time
 import urllib
-import urllib2
 
+import requests
 from twisted.internet.defer import setDebugging
 from twisted.python import log
 
@@ -61,12 +58,11 @@ class APIClient(object):
             if params:
                 for param in params:
                     url = 'http://%s/report_channel_server_status/%s/' % (conf.INDEX_SERVER_BASE_URL, conf.NAME)
-                    url += '?' + urllib.urlencode(param)
-                    req = urllib2.Request(url)
-                    try:
-                        urllib2.urlopen(req, timeout=TIMEOUT)
 
-                    except Exception:
+                    try:
+                        resp = requests.get(url, param, timeout=TIMEOUT)
+
+                    except requests.RequestsException:
                         log.msg(exc=True)
 
             else:
